@@ -1,0 +1,19 @@
+{
+    "root": true,
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": { "jsx": true }
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
+      "no-console": 2,
+      "react/react-in-jsx-scope": "off"
+    },
+    "plugins": ["babel"],
+    "globals": { "React": "writable" }
+  }
