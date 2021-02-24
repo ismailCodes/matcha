@@ -1,5 +1,0 @@
-CREATE DATABASE matcha;
-
-CREATE TABLE users (
-
-);
