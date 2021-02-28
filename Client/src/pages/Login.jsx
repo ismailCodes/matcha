@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import login from '../images/login.jpeg';
 
 function Login() {
@@ -115,7 +116,7 @@ function Login() {
             <div className='mt-12 text-sm font-display font-semibold text-gray-700 text-center'>
               Don&apos;t have an account ?
               <a className='cursor-pointer text-indigo-600 hover:text-indigo-800'>
-                Sign up
+                <Link to='/register'>Register</Link>
               </a>
             </div>
           </div>
