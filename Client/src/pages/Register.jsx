@@ -9,7 +9,45 @@ function Register() {
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => console.log(data);
 
-  const email_errors = {
+  const firstNameErrors = {
+    required: {
+      value: true,
+      message: 'first name is required',
+    },
+    maxLength: {
+      value: 255,
+      message: 'first name should be less than 255 characters',
+    },
+    minLength: {
+      value: 2,
+      message: 'first name should be at least 2 characters',
+    },
+    pattern: {
+      value: /[a-z]/gi,
+      message: 'first name can have only letters',
+    },
+  };
+
+  const lastNameErrors = {
+    required: {
+      value: true,
+      message: 'last name is required',
+    },
+    maxLength: {
+      value: 255,
+      message: 'last name should be less than 255 characters',
+    },
+    minLength: {
+      value: 2,
+      message: 'last name should be at least 2 characters',
+    },
+    pattern: {
+      value: /[a-z]/gi,
+      message: 'last name can have only letters',
+    },
+  };
+
+  const emailErrors = {
     required: {
       value: true,
       message: 'email is required',
@@ -24,7 +62,7 @@ function Register() {
     },
   };
 
-  const password_errors = {
+  const passwordErrors = {
     required: 'password is required',
     maxLength: {
       value: 255,
@@ -58,13 +96,13 @@ function Register() {
                     className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                     type=''
                     placeholder='John'
-                    // ref={register(email_errors)}
+                    ref={register(firstNameErrors)}
                   />
-                  {/* {errors.email && (
-                  <p className='text-red-400 pt-1 text-sm'>
-                    {errors.email.message}
-                  </p>
-                )} */}
+                  {errors.firstName && (
+                    <p className='text-red-400 pt-1 text-sm'>
+                      {errors.firstName.message}
+                    </p>
+                  )}
                 </div>
                 <div className='w-full lg:w-6/12 ml-1'>
                   <div className='text-sm font-bold text-gray-700 tracking-wide mt-4'>
@@ -75,13 +113,13 @@ function Register() {
                     className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                     type=''
                     placeholder='Doe'
-                    // ref={register(email_errors)}
+                    ref={register(lastNameErrors)}
                   />
-                  {/* {errors.email && (
-                  <p className='text-red-400 pt-1 text-sm'>
-                    {errors.email.message}
-                  </p>
-                )} */}
+                  {errors.lastName && (
+                    <p className='text-red-400 pt-1 text-sm'>
+                      {errors.lastName.message}
+                    </p>
+                  )}
                 </div>
               </div>
               <div>
@@ -93,7 +131,7 @@ function Register() {
                   className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                   type=''
                   placeholder='mike@gmail.com'
-                  ref={register(email_errors)}
+                  ref={register(emailErrors)}
                 />
                 {errors.email && (
                   <p className='text-red-400 pt-1 text-sm'>
@@ -113,7 +151,7 @@ function Register() {
                     className='w-full flex-grow flex-shrink text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-red-500 pr-16'
                     type={hidden ? 'password' : 'text'}
                     placeholder='Enter your password'
-                    ref={register(password_errors)}
+                    ref={register(passwordErrors)}
                   />
                   <span
                     className='absolute right-0'
@@ -124,6 +162,11 @@ function Register() {
                     </label>
                   </span>
                 </div>
+                {errors.password && (
+                  <p className='text-red-400 pt-1 text-sm'>
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
               <div className='mt-10'>
                 <button
@@ -138,9 +181,9 @@ function Register() {
             </form>
             <div className='mt-12 text-sm font-display font-semibold text-gray-700 text-center'>
               You have an account ?
-              <a className='cursor-pointer text-indigo-600 hover:text-indigo-800'>
+              <span className='cursor-pointer text-indigo-600 hover:text-indigo-800'>
                 <Link to='/login'>Log in</Link>
-              </a>
+              </span>
             </div>
           </div>
         </div>
