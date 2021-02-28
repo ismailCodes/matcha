@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import register_img from '../images/register.jpeg';
 
 function Register() {
@@ -123,11 +124,6 @@ function Register() {
                     </label>
                   </span>
                 </div>
-                {errors.password && (
-                  <p className='text-red-400 pt-1 text-sm'>
-                    {errors.password.message}
-                  </p>
-                )}
               </div>
               <div className='mt-10'>
                 <button
@@ -143,7 +139,7 @@ function Register() {
             <div className='mt-12 text-sm font-display font-semibold text-gray-700 text-center'>
               You have an account ?
               <a className='cursor-pointer text-indigo-600 hover:text-indigo-800'>
-                Log in
+                <Link to='/login'>Log in</Link>
               </a>
             </div>
           </div>
