@@ -2,81 +2,81 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Link,
+  // Link,
   // Redirect,
-} from "react-router-dom";
-import Login from "./pages/Login";
-import Browse from "./pages/Browse";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import Research from "./pages/Research";
-import Chat from "./pages/Chat";
-import Notifications from "./pages/Notifications";
-import ExternalProfile from "./pages/ExternalProfile";
+} from 'react-router-dom';
+import Login from './pages/Login';
+import Browse from './pages/Browse';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
+import Research from './pages/Research';
+import Chat from './pages/Chat';
+import Notifications from './pages/Notifications';
+import ExternalProfile from './pages/ExternalProfile';
 
 export default function App() {
   // let loggedIn = false;
   return (
     <Router>
-      <div>
+      {/* <div>
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to='/'>Home</Link>
             </li>
             <li>
-              <Link to="/login">Login</Link>
+              <Link to='/login'>Login</Link>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <Link to='/register'>Register</Link>
             </li>
             <li>
-              <Link to="/browse">Browse</Link>
+              <Link to='/browse'>Browse</Link>
             </li>
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to='/profile'>Profile</Link>
             </li>
             <li>
-              <Link to="/research">Research</Link>
+              <Link to='/research'>Research</Link>
             </li>
             <li>
-              <Link to="/chat">Chat</Link>
+              <Link to='/chat'>Chat</Link>
             </li>
             <li>
-              <Link to="/notifications">Notifications</Link>
+              <Link to='/notifications'>Notifications</Link>
             </li>
           </ul>
         </nav>
       </div>
-      <hr />
+      <hr /> */}
 
       <Switch>
-        <Route exact path="/">
+        <Route exact path='/'>
           {/* {loggedIn ? <Redirect to="/browse" /> : <LoginPage />} */}
           <Login />
         </Route>
-        <Route exact path="/login">
+        <Route exact path='/login'>
           <Login />
         </Route>
-        <Route exact path="/register">
+        <Route exact path='/register'>
           <Register />
         </Route>
-        <Route exact path="/browse">
+        <Route exact path='/browse'>
           <Browse />
         </Route>
-        <Route exact path="/profile">
+        <Route exact path='/profile'>
           <Profile />
         </Route>
-        <Route exact path="/research">
+        <Route exact path='/research'>
           <Research />
         </Route>
-        <Route exact path="/chat">
+        <Route exact path='/chat'>
           <Chat />
         </Route>
-        <Route exact path="/notifications">
+        <Route exact path='/notifications'>
           <Notifications />
         </Route>
-        <Route exact path="/user/:id">
+        <Route exact path='/user/:id'>
           <ExternalProfile />
         </Route>
       </Switch>

@@ -1,5 +1,11 @@
+import Layout from '../components/Layout';
+
 function Profile() {
-  return <div>Profile page</div>;
+  return (
+    <div className='w-full h-full'>
+      <Layout /*Component={Something} pageProps={Something}*/ />
+    </div>
+  );
 }
 
 export default Profile;
