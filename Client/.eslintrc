@@ -12,7 +12,8 @@
     "rules": {
       "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
       "no-console": 2,
-      "react/react-in-jsx-scope": "off"
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off"
     },
     "plugins": ["babel"],
     "globals": { "React": "writable" }
