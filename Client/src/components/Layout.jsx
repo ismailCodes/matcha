@@ -10,8 +10,8 @@ import larbi from '../images/larbi.jpg';
 
 function Layout({ children }) {
   return (
-    <div className='w-full h-full'>
-      <header className='text-gray-200 body-font bg-red-500 w-full'>
+    <div className='w-full h-full flex flex-col flex-grow bg-gray-50'>
+      <header className='fixed top-0 z-50 text-gray-200 flex items-center body-font bg-gradient-to-bl from-red-500 to-pink-600 w-full h-16'>
         <nav className='flex p-1 md:p-2 flex-row items-center w-full justify-between'>
           <div className='flex w-1/3 sm:w-auto justify-center title-font font-medium items-center text-gray-200 sm:mr-8 px-3 order-2 sm:order-1'>
             <FontAwesomeIcon size='2x' icon={faMortarPestle} />
@@ -19,12 +19,12 @@ function Layout({ children }) {
           </div>
           <div className='sm:ml-auto w-1/3 sm:w-auto flex flex-wrap justify-end items-center text-base sm:justify-center order-3 sm:order-2 sm:mr-3'>
             <FontAwesomeIcon
-              className='mx-3 hover:text-gray-300'
+              className='mx-2 sm:mx-4 hover:text-gray-300'
               size='2x'
               icon={faEnvelope}
             />
             <FontAwesomeIcon
-              className='mx-3 hover:text-gray-300'
+              className='mx-2 sm:mx-4 hover:text-gray-300'
               size='2x'
               icon={faBell}
             />
@@ -66,6 +66,9 @@ function Layout({ children }) {
         </nav>
       </header>
       {children}
+      <footer className='w-full flex justify-center text-xs text-gray-500 bg-gray-100 sm:bg-gray-50'>
+        Sma9lo &copy; 2021
+      </footer>
     </div>
   );
 }

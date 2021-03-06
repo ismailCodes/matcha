@@ -1,27 +1,62 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Layout from '../components/Layout';
-import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUserEdit,
+  faMale,
+  faFemale,
+} from '@fortawesome/free-solid-svg-icons';
 import larbi from '../images/larbi.jpg';
+import RoundIconButton from '../library/RoundIconButton';
+import { loremIpsum } from '../data/loremIpsum';
+import Tag from '../library/Tag';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Profile() {
   return (
     <Layout>
-      <div className='w-full h-full items-center flex flex-col sm:pt-4'>
-        <div className='w-full sm:max-w-md bg-gray-600 h-96 relative bg-cover bg-center'>
-          <img src={larbi} alt='larbi' className='object-cover w-full h-full' />
-          <button className='rounded-full bg-red-500 absolute bottom-0 left-4 transform translate-y-1/2 h-20 w-20 shadow-lg border-2'>
-            <FontAwesomeIcon
-              className='mx-3 text-gray-50 hover:text-white'
-              size='2x'
-              icon={faUserEdit}
+      <div className='w-full items-center flex-grow flex flex-col'>
+        <div className='bg-gray-100 sm:my-4'>
+          <div className='sticky -top-20 z-10 mt-16 w-full sm:max-w-md bg-gray-600 h-80 bg-cover bg-center'>
+            <img
+              src={larbi}
+              alt='larbi'
+              className='object-cover w-full h-full'
             />
-          </button>
-        </div>
-        <div className='w-full sm:max-w-md self-center pt-12 pb-2 px-6 font-bold text-2xl'>
-          Laarbi LHILALI
-        </div>
-        <div className='w-full sm:max-w-md self-center px-6 font-normal text-lg'>
-          Managing director at 1337 FIL
+          </div>
+          <div className='relative '>
+            <div className='sticky bg-gray-100 top-60 z-10 pb-2'>
+              <RoundIconButton icon={faUserEdit} />
+              <div className='w-full sm:max-w-md self-center pt-10 pb-2 px-6 font-bold text-2xl'>
+                Laarbi LHILALI
+              </div>
+              <div className='w-full sm:max-w-md self-center px-6 font-normal text-lg'>
+                Managing director at 1337 FIL
+              </div>
+              <div className='w-full sm:max-w-md self-center px-4 text-gray-700 text-sm pt-2'>
+                <FontAwesomeIcon
+                  className='mx-2 text-gray-600 hover:text-white transform '
+                  size='2x'
+                  icon={faMale}
+                />
+                Looking for
+                <FontAwesomeIcon
+                  className='mx-2 text-gray-600 hover:text-white transform '
+                  size='2x'
+                  icon={faFemale}
+                />
+              </div>
+            </div>
+            <div className='pt-4'>
+              <div className='w-full sm:max-w-md self-center px-6 text-gray-700 text-sm py-2'>
+                {loremIpsum.repeat(3)}
+              </div>
+              <div className='w-full sm:max-w-md self-center px-6 text-gray-700  pb-2'>
+                Tags:
+              </div>
+              <div className='w-full sm:max-w-md self-center px-6'>
+                <Tag color='bg-red-400' text='tag1' />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
