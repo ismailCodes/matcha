@@ -5,22 +5,21 @@ import {
   faFemale,
 } from '@fortawesome/free-solid-svg-icons';
 import larbi from '../images/larbi.jpg';
+import larbi2 from '../images/larbi2.jpg';
+import larbi3 from '../images/larbi3.jpeg';
 import RoundIconButton from '../library/RoundIconButton';
 import { loremIpsum } from '../data/loremIpsum';
 import Tag from '../library/Tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImagesCarousel from '../library/ImagesCarousel';
 
 function Profile() {
   return (
     <Layout>
-      <div className='w-full items-center flex-grow flex flex-col'>
-        <div className='bg-gray-100 sm:my-4'>
+      <div className='w-full bg-gray-50 items-center flex-grow flex flex-col'>
+        <div className='bg-gray-100 sm:my-4 pb-4'>
           <div className='sticky -top-20 z-10 mt-16 w-full sm:max-w-md bg-gray-600 h-80 bg-cover bg-center'>
-            <img
-              src={larbi}
-              alt='larbi'
-              className='object-cover w-full h-full'
-            />
+            <ImagesCarousel images={[larbi, larbi2, larbi3]} />
           </div>
           <div className='relative '>
             <div className='sticky bg-gray-100 top-60 z-10 pb-2'>
@@ -46,7 +45,7 @@ function Profile() {
               </div>
             </div>
             <div className='pt-4'>
-              <div className='w-full sm:max-w-md self-center px-6 text-gray-700 text-sm py-2'>
+              <div className='w-full sm:max-w-md self-center px-6 text-gray-700 text-lg py-2'>
                 {loremIpsum.repeat(3)}
               </div>
               <div className='w-full sm:max-w-md self-center px-6 text-gray-700  pb-2'>

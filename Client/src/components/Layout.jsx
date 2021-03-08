@@ -7,6 +7,7 @@ import {
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import larbi from '../images/larbi.jpg';
+import DropDownMenu from '../library/DropDownMenu';
 
 function Layout({ children }) {
   return (
@@ -43,24 +44,7 @@ function Layout({ children }) {
                   icon={faCog}
                 />
               </div>
-              <ul className='absolute hidden text-gray-700 pt-2 group-hover:block sm:-ml-12'>
-                <li className=''>
-                  <a
-                    className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'
-                    href='#'
-                  >
-                    Profile
-                  </a>
-                </li>
-                <li className=''>
-                  <a
-                    className='rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'
-                    href='#'
-                  >
-                    Sign Out
-                  </a>
-                </li>
-              </ul>
+              <DropDownMenu elements={['Profile', 'Sign-Out']} />
             </div>
           </div>
         </nav>
