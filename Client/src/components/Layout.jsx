@@ -54,6 +54,7 @@ function Layout({ children }) {
         Sma9lo &copy; 2021
       </footer>
     </div>
+
   );
 }
 

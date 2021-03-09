@@ -65,6 +65,7 @@ export default function App() {
           <Browse />
         </Route>
         <Route exact path='/profile' component={Profile} />
+
         <Route exact path='/research'>
           <Research />
         </Route>
