@@ -22,28 +22,28 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to='/'>Home</Link>
             </li>
             <li>
-              <Link to="/login">Login</Link>
+              <Link to='/login'>Login</Link>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <Link to='/register'>Register</Link>
             </li>
             <li>
-              <Link to="/browse">Browse</Link>
+              <Link to='/browse'>Browse</Link>
             </li>
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to='/profile'>Profile</Link>
             </li>
             <li>
-              <Link to="/research">Research</Link>
+              <Link to='/research'>Research</Link>
             </li>
             <li>
-              <Link to="/chat">Chat</Link>
+              <Link to='/chat'>Chat</Link>
             </li>
             <li>
-              <Link to="/notifications">Notifications</Link>
+              <Link to='/notifications'>Notifications</Link>
             </li>
           </ul>
         </nav>
@@ -64,9 +64,8 @@ export default function App() {
         <Route exact path='/browse'>
           <Browse />
         </Route>
-        <Route exact path='/profile'>
-          <Profile />
-        </Route>
+        <Route exact path='/profile' component={Profile} />
+
         <Route exact path='/research'>
           <Research />
         </Route>
