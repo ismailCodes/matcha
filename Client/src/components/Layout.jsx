@@ -34,7 +34,7 @@ function Layout({ children }) {
             <div className='group inline-block '>
               <div className='w-12 h-12 flex items-center'>
                 <img
-                  className='object-cover rounded-full hover:border-red-500 border-gray-100 shadow-sm hidden sm:block w-12 h-12'
+                  className='object-cover border rounded-full hover:border-red-500 border-gray-100 shadow-sm hidden sm:block w-12 h-12'
                   src={larbi}
                   alt='user image'
                 />

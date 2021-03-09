@@ -1,6 +1,7 @@
-import React from 'react';
+import { getRandomColor } from '../utils/getRandomColor';
 
-function Tag({ color, text }) {
+function Tag({ text }) {
+  const color = getRandomColor();
   return (
     <button className={`${color} text-white p-1 rounded-md px-2 m-1 text-sm`}>
       {text}

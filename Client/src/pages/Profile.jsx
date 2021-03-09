@@ -1,63 +1,25 @@
 import Layout from '../components/Layout';
-import {
-  faUserEdit,
-  faMale,
-  faFemale,
-} from '@fortawesome/free-solid-svg-icons';
 import larbi from '../images/larbi.jpg';
 import larbi2 from '../images/larbi2.jpg';
 import larbi3 from '../images/larbi3.jpeg';
-import RoundIconButton from '../library/RoundIconButton';
 import { loremIpsum } from '../data/loremIpsum';
-import Tag from '../library/Tag';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ImagesCarousel from '../library/ImagesCarousel';
+import ProfileComp from '../components/Profiler';
+
+const profile = {
+  images: [larbi, larbi2, larbi3],
+  edit: true,
+  name: 'Larbi LHILALI',
+  description: 'Managing director at 1337 FIL',
+  gender: 'M',
+  sexuality: 'F',
+  bio: loremIpsum,
+  tags: ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8'],
+};
 
 function Profile() {
   return (
     <Layout>
-      <div className='w-full bg-gray-50 items-center flex-grow flex flex-col'>
-        <div className='bg-gray-100 sm:my-4 pb-4'>
-          <div className='sticky -top-20 z-10 mt-16 w-full sm:max-w-md bg-gray-600 h-80 bg-cover bg-center'>
-            <ImagesCarousel images={[larbi, larbi2, larbi3]} />
-          </div>
-          <div className='relative '>
-            <div className='sticky bg-gray-100 top-60 z-10 pb-2'>
-              <RoundIconButton icon={faUserEdit} />
-              <div className='w-full sm:max-w-md self-center pt-10 pb-2 px-6 font-bold text-2xl'>
-                Laarbi LHILALI
-              </div>
-              <div className='w-full sm:max-w-md self-center px-6 font-normal text-lg'>
-                Managing director at 1337 FIL
-              </div>
-              <div className='w-full sm:max-w-md self-center px-4 text-gray-700 text-sm pt-2'>
-                <FontAwesomeIcon
-                  className='mx-2 text-gray-600 hover:text-white transform '
-                  size='2x'
-                  icon={faMale}
-                />
-                Looking for
-                <FontAwesomeIcon
-                  className='mx-2 text-gray-600 hover:text-white transform '
-                  size='2x'
-                  icon={faFemale}
-                />
-              </div>
-            </div>
-            <div className='pt-4'>
-              <div className='w-full sm:max-w-md self-center px-6 text-gray-700 text-lg py-2'>
-                {loremIpsum.repeat(3)}
-              </div>
-              <div className='w-full sm:max-w-md self-center px-6 text-gray-700  pb-2'>
-                Tags:
-              </div>
-              <div className='w-full sm:max-w-md self-center px-6'>
-                <Tag color='bg-red-400' text='tag1' />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProfileComp {...profile} />
     </Layout>
   );
 }

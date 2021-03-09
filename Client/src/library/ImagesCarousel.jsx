@@ -20,7 +20,12 @@ function ImagesCarousel({ images }) {
             className='object-cover w-full h-full'
           />
         ) : (
-          <img src={image} alt='larbi' className='object-cover w-full h-full' />
+          <img
+            key={images.indexOf(image)}
+            src={image}
+            alt='larbi'
+            className='object-cover w-full h-full'
+          />
         );
       })}
     </Carousel>
