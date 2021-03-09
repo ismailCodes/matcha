@@ -11,7 +11,7 @@ const profile = {
   name: 'Larbi LHILALI',
   description: 'Managing director at 1337 FIL',
   gender: 'M',
-  sexuality: 'F',
+  sexuality: 'M',
   bio: loremIpsum,
   tags: ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8'],
 };
@@ -25,7 +25,3 @@ function Profile() {
 }
 
 export default Profile;
-
-<comp>
-  <comp2></comp2>
-</comp>;
