@@ -7,7 +7,10 @@ module.exports = gql`
     lastName: String
     username: String
     email: String
+    """
+    "
     password: String
+    """
     isVerified: Boolean
     token: String
   }
@@ -20,6 +23,12 @@ module.exports = gql`
     password: String!
   }
 
+  input ResetInput {
+    password: String!
+    confirmPassword: String!
+    resetToken: String!
+  }
+
   type Query {
     getUsers: User
   }
@@ -28,5 +37,7 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     confirmEmail(token: String!): Boolean!
+    recoverPassword(email: String!): User!
+    resetPassword(resetInput: ResetInput): User!
   }
 `;
