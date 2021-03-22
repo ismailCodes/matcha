@@ -6,6 +6,7 @@ const resolvers = require("./graphql/resolvers");
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req }),
 });
 
 server.listen({ port: 5000 }).then((res) => {

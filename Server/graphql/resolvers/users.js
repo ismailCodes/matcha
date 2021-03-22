@@ -14,6 +14,7 @@ const {
   sendResetEmail,
 } = require("../../services/emailService");
 const { generateToken } = require("../../util/generateToken");
+const checkAuth = require("../../util/checkAuth");
 
 module.exports = {
   Mutation: {
@@ -87,7 +88,7 @@ module.exports = {
       if (userEmail.rows.length !== 0) {
         throw new UserInputError("Email already exist.", {
           errors: {
-            username: "This email is already registered", // for frontend
+            email: "This email is already registered", // for frontend
           },
         });
       }
@@ -97,13 +98,12 @@ module.exports = {
         "INSERT INTO USERS (user_first_name, user_last_name, username,user_email, user_password) VALUES($1, $2, $3, $4, $5) RETURNING *",
         [firstName, lastName, username, email, bcryptPassword]
       );
-
       // Send confirmation email
       sendConfirmationEmail(newUser);
 
       const token = generateToken(newUser);
       return {
-        id: newUser.rows[0].user_id,
+        //id: newUser.rows[0].user_id,
         firstName,
         lastName,
         username,
@@ -163,7 +163,7 @@ module.exports = {
     ) {
       //TODO: validate input agaaaaaaaain and throw Userinputerror of apollo
       if (password !== confirmPassword) {
-        throw new Error(`Your passwords don't match`);
+        throw new Error("Your passwords don't match");
       }
       const user = await pool.query(
         "SELECT * FROM users WHERE reset_password_token = $1",
@@ -185,5 +185,7 @@ module.exports = {
       return { email: user.rows[0].user_email }; // not sure yet what to return to client...
       //TODO: check again all of this
     },
+
+    // async fillProfile(_, {}, context, info) {},
   },
 };
