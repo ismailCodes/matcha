@@ -1,20 +1,23 @@
 {
-    "root": true,
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaFeatures": { "jsx": true }
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
-      "no-console": 2,
-      "react/react-in-jsx-scope": "off",
-      "no-unused-vars": "warn"
-    },
-    "plugins": ["babel"],
-    "globals": { "React": "writable" }
-  }
+
+  "root": true,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
+    "no-console": 2,
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "no-warning-comments":"off",
+    "no-unused-vars":"off"
+  },
+  "plugins": ["babel"],
+  "globals": { "React": "writable" }
+}
