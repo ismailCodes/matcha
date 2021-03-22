@@ -6,7 +6,6 @@ import {
   faBell,
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
-
 import larbi from '../images/larbi.jpg';
 import DropDownMenu from '../library/DropDownMenu';
 
