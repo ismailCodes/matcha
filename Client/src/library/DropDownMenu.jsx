@@ -17,7 +17,7 @@ function DropDownMenu({ elements }) {
   });
 
   return (
-    <ul className='absolute hidden text-gray-700 pt-2 group-hover:block sm:-ml-12'>
+    <ul className='absolute hidden text-gray-700 pt-2 group-hover:block sm:-ml-16'>
       {listItems}
     </ul>
   );

@@ -60,9 +60,7 @@ function Login() {
                   ref={register(email_errors)}
                 />
                 {errors.email && (
-                  <p className='text-red-400 pt-1 text-sm'>
-                    {errors.email.message}
-                  </p>
+                  <p className='text-red-400 pt-1 text-sm'>{errors.email.message}</p>
                 )}
               </div>
               <div className='mt-8 relative'>
