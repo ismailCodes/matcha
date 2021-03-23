@@ -7,6 +7,9 @@ if not exists "uuid-ossp";
 CREATE TYPE gender AS ENUM
 ('M', 'F');
 
+Create TYPE sexual_preference AS ENUM
+('Heterosexual', 'Bisexual', 'Homosexual');
+
 CREATE TABLE users
 (
     user_id uuid PRIMARY KEY DEFAULT
@@ -19,7 +22,9 @@ CREATE TABLE users
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     reset_password_token VARCHAR(255) NOT NULL DEFAULT 0,--??????
     reset_password_expiry VARCHAR(255),
-    user_gender gender
+    user_gender gender,
+    user_sexual_preference sexual_preference,
+    -- user_biography VARCHAR(255) NOT NULL
     --????????
 );
 

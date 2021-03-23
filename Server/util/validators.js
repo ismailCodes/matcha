@@ -18,7 +18,7 @@ module.exports.validateRegisterInput = (
   ) {
     errors.username = "Invalid username";
   }
-  if (firstName.trim() === "" || firstName === null) {
+  if (firstName === null || firstName.trim() === "") {
     errors.firstName = "Firstname must not be empty";
   } else if (
     !/^[a-z]+$/i.test(firstName.trim()) ||

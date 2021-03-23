@@ -191,12 +191,87 @@ module.exports = {
       try {
         await pool.query(
           "UPDATE users SET user_gender = $1 WHERE user_id = $2",
-          [gender, user.id]
+          [gender[0] /*FIXME:change in database*/, user.id]
         );
       } catch (e) {
         console.log(e);
       }
       //console.log(updateUser.rows[0]);
+      return true;
+    },
+
+    async addSexualPreference(_, { sexualPreference }, context, info) {
+      const user = checkAuth(context);
+      try {
+        await pool.query(
+          "UPDATE users SET user_sexual_preference = $1 WHERE user_id = $2",
+          [sexualPreference, user.id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      return true;
+    },
+    async modifyFirstName(_, { firstName }, context, info) {
+      const user = checkAuth(context);
+      if (firstName === null || firstName.trim() === "") {
+        throw new Error("Firstname must not be empty");
+      } else if (
+        !/^[a-z]+$/i.test(firstName.trim()) ||
+        firstName.trim().length < 2 ||
+        firstName.trim().length > 255
+      ) {
+        throw new Error("Invalid firstname");
+      }
+      try {
+        await pool.query(
+          "UPDATE users SET user_first_name = $1 WHERE user_id = $2",
+          [firstName.trim(), user.id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      return true;
+    },
+    async modifyLastName(_, { lastName }, context, info) {
+      const user = checkAuth(context);
+      if (lastName === null || lastName.trim() === "") {
+        throw new Error("Lastname must not be empty");
+      } else if (
+        !/^[a-z]+$/i.test(lastName.trim()) ||
+        lastName.trim().length < 2 ||
+        lastName.trim().length > 255
+      ) {
+        throw new Error("Invalid lastName");
+      }
+      try {
+        await pool.query(
+          "UPDATE users SET user_last_name = $1 WHERE user_id = $2",
+          [lastName.trim(), user.id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      return true;
+    },
+    async modifyEmail(_, { email }, context, info) {
+      const user = checkAuth(context);
+      function validEmail(email) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+      }
+      if (!validEmail(email)) {
+        throw new Error("Email must be a valid email address");
+      }
+      try {
+        await pool.query(
+          "UPDATE users SET user_email = $1 WHERE user_id = $2",
+          [email.trim(), user.id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      //TODO:send confirmation email ?
+      // TODO:logout user and login again..token.. ??
       return true;
     },
   },
