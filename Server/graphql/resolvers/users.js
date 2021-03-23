@@ -186,6 +186,18 @@ module.exports = {
       //TODO: check again all of this
     },
 
-    // async fillProfile(_, {}, context, info) {},
+    async addGender(_, { gender }, context, info) {
+      const user = checkAuth(context);
+      try {
+        await pool.query(
+          "UPDATE users SET user_gender = $1 WHERE user_id = $2",
+          [gender, user.id]
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      //console.log(updateUser.rows[0]);
+      return true;
+    },
   },
 };

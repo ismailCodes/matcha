@@ -4,6 +4,9 @@ CREATE DATABASE matcha;
 create extension
 if not exists "uuid-ossp";
 
+CREATE TYPE gender AS ENUM
+('M', 'F');
+
 CREATE TABLE users
 (
     user_id uuid PRIMARY KEY DEFAULT
@@ -15,7 +18,8 @@ CREATE TABLE users
     user_password VARCHAR(255) NOT NULL,
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     reset_password_token VARCHAR(255) NOT NULL DEFAULT 0,--??????
-    reset_password_expiry VARCHAR(255)
+    reset_password_expiry VARCHAR(255),
+    user_gender gender
     --????????
 );
 

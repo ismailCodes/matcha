@@ -39,5 +39,6 @@ module.exports = gql`
     confirmEmail(token: String!): Boolean!
     recoverPassword(email: String!): User!
     resetPassword(resetInput: ResetInput): User!
+    addGender(gender: String!): Boolean!
   }
 `;
