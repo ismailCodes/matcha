@@ -1,11 +1,11 @@
+import { faMars, faUserEdit, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import ImagesCarousel from '../library/ImagesCarousel';
-import Tag from '../library/Tag';
 import RoundIconButton from '../library/RoundIconButton';
-import { faUserEdit, faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
+import Tag from '../library/Tag';
 import { getInterests } from '../utils/getInterests';
-import ProfileDialogPopUp from './ProfileDialogPopUp';
+import EditProfileModal from './EditProfileModal';
 
 // import Button from '@material-ui/core/Button';
 // import Dialog from '@material-ui/core/Dialog';
@@ -66,14 +66,28 @@ function Bio(props) {
 }
 
 function ProfileComp(props) {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const { images, edit, name, description, gender, sexuality, bio, tags } = props;
@@ -82,15 +96,19 @@ function ProfileComp(props) {
   return (
     <div className='w-full bg-gray-100 items-center flex flex-col h-full'>
       <div className='mt-16 sm:mt-20 sm:shadow-xl pb-6'>
-        <ProfileDialogPopUp open={open} handleClose={handleClose} />
+        {/* <ProfileDialogPopUp open={open} handleClose={handleClose} /> */}
+        <EditProfileModal
+          isModalVisible={isModalVisible}
+          showModal={showModal}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+        />
         <div className='sticky -top-20 z-10 w-full sm:max-w-md bg-gray-600 h-80 bg-cover bg-center'>
           <ImagesCarousel images={images} />
         </div>
         <div className='relative bg-gray-100'>
           <div className='sticky bg-gray-100 top-60 z-10 pb-2'>
-            {edit ? (
-              <RoundIconButton icon={faUserEdit} onClick={handleClickOpen} />
-            ) : null}
+            {edit ? <RoundIconButton icon={faUserEdit} onClick={showModal} /> : null}
             <div className='w-full sm:max-w-md self-center pt-10 pb-2 px-6 font-bold text-2xl'>
               {name}
             </div>
