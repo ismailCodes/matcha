@@ -1,6 +1,14 @@
 const { gql } = require("apollo-server");
 
 module.exports = gql`
+  type File {
+    url: String!
+  }
+
+  type Query {
+    uploads: [File]
+  }
+
   type User {
     id: ID
     firstName: String
@@ -25,10 +33,6 @@ module.exports = gql`
     resetToken: String!
   }
 
-  type Query {
-    getUsers: User
-  }
-
   enum Gender {
     Male
     Female
@@ -51,5 +55,7 @@ module.exports = gql`
     modifyEmail(email: String!): Boolean!
     addGender(gender: Gender!): Boolean!
     addSexualPreference(sexualPreference: SexualPreference!): Boolean!
+    addBiography(biography: String!): Boolean!
+    uploadFile(file: Upload!): File!
   }
 `;

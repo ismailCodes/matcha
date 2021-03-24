@@ -3,6 +3,8 @@ require("dotenv").config();
 const { UserInputError } = require("apollo-server");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const path = require("path");
+const fs = require("fs");
 
 const pool = require("../../db");
 const {
@@ -200,6 +202,20 @@ module.exports = {
       return true;
     },
 
+    async addBiography(_, { biography }, context, info) {
+      const user = checkAuth(context);
+      try {
+        await pool.query(
+          "UPDATE users SET user_biography = $1 WHERE user_id = $2",
+          [biography, user.id]
+        );
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
+
     async addSexualPreference(_, { sexualPreference }, context, info) {
       const user = checkAuth(context);
       try {
@@ -209,6 +225,7 @@ module.exports = {
         );
       } catch (error) {
         console.log(error);
+        return false;
       }
       return true;
     },
@@ -230,6 +247,7 @@ module.exports = {
         );
       } catch (error) {
         console.log(error);
+        return false;
       }
       return true;
     },
@@ -273,6 +291,16 @@ module.exports = {
       //TODO:send confirmation email ?
       // TODO:logout user and login again..token.. ??
       return true;
+    },
+
+    async uploadFile(parent, { file }) {
+      const { createReadStream, filename, mimetype, encoding } = await file;
+      const stream = createReadStream();
+      const pathName = path.join(__dirname, `/public/images/${filename}`);
+      await stream.pipe(fs.createWriteStream(pathName));
+      return {
+        url: `http://localhost:4000/images/${filename}`,
+      };
     },
   },
 };
