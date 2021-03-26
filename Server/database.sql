@@ -24,6 +24,9 @@ CREATE TABLE users
     reset_password_expiry VARCHAR(255),
     user_gender gender,
     user_sexual_preference sexual_preference,
+    user_biography VARCHAR(600),
+    user_birthday DATE,
+    user_last_connected TIMESTAMP
     -- user_biography VARCHAR(255) NOT NULL
     --????????
 );

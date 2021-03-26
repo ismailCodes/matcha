@@ -57,5 +57,6 @@ module.exports = gql`
     addSexualPreference(sexualPreference: SexualPreference!): Boolean!
     addBiography(biography: String!): Boolean!
     uploadFile(file: Upload!): File!
+    addBirthday(birthday: String!): Boolean!
   }
 `;

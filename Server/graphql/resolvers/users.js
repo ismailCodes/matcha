@@ -245,11 +245,11 @@ module.exports = {
           "UPDATE users SET user_first_name = $1 WHERE user_id = $2",
           [firstName.trim(), user.id]
         );
+        return true;
       } catch (error) {
         console.log(error);
         return false;
       }
-      return true;
     },
     async modifyLastName(_, { lastName }, context, info) {
       const user = checkAuth(context);
@@ -267,10 +267,11 @@ module.exports = {
           "UPDATE users SET user_last_name = $1 WHERE user_id = $2",
           [lastName.trim(), user.id]
         );
+        return true;
       } catch (error) {
         console.log(error);
+        return false;
       }
-      return true;
     },
     async modifyEmail(_, { email }, context, info) {
       const user = checkAuth(context);
@@ -285,14 +286,40 @@ module.exports = {
           "UPDATE users SET user_email = $1 WHERE user_id = $2",
           [email.trim(), user.id]
         );
+        return true;
       } catch (error) {
         console.log(error);
+        return false;
       }
-      //TODO:send confirmation email ?
+      //TODO:send confirmation email ??
       // TODO:logout user and login again..token.. ??
-      return true;
+    },
+    async addBirthday(_, { birthday }, context, info) {
+      const user = checkAuth(context);
+      console.log(user);
+      console.log(birthday);
+      if (birthday === null || birthday === "") {
+        throw new UserInputError("Birthday can't be empty");
+      } else if (
+        !/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(birthday)
+      ) {
+        throw new UserInputError("Birthday is not in valid format YYYY-MM-DD");
+      }
+      //TODO:check for validity of bithday year < current year - 18 ??
+      try {
+        await pool.query(
+          "UPDATE users SET user_birthday = $1 WHERE user_id = $2",
+          [birthday, user.id]
+        );
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
 
+    // upload not complete yet need frontend ??
+    //ref : https://www.youtube.com/watch?v=BcZ_ItGplfE&ab_channel=Classsed
     async uploadFile(parent, { file }) {
       const { createReadStream, filename, mimetype, encoding } = await file;
       const stream = createReadStream();

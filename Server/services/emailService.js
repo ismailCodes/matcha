@@ -16,6 +16,7 @@ const { generateToken } = require("../util/generateToken");
 });*/
 
 // http://ethereal.email/ Transporter
+//FIXME: ethereal email can crash the server sometimes don t use in defense !
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
