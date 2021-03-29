@@ -15,7 +15,6 @@ module.exports = gql`
     lastName: String
     username: String
     email: String
-    isVerified: Boolean
     token: String
   }
 
@@ -44,6 +43,14 @@ module.exports = gql`
     Homosexual
   }
 
+  type Interest {
+    interest: String!
+  }
+
+  input InterestInput {
+    interest: String!
+  }
+
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
@@ -58,5 +65,6 @@ module.exports = gql`
     addBiography(biography: String!): Boolean!
     uploadFile(file: Upload!): File!
     addBirthday(birthday: String!): Boolean!
+    addInterrests(interests: [InterestInput]): Boolean!
   }
 `;

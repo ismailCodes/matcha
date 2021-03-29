@@ -296,16 +296,17 @@ module.exports = {
     },
     async addBirthday(_, { birthday }, context, info) {
       const user = checkAuth(context);
-      console.log(user);
-      console.log(birthday);
+      var date = new Date();
+      var currentYear = date.getFullYear();
       if (birthday === null || birthday === "") {
         throw new UserInputError("Birthday can't be empty");
       } else if (
         !/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(birthday)
       ) {
         throw new UserInputError("Birthday is not in valid format YYYY-MM-DD");
+      } else if (parseInt(birthday.split("-")[0], 10) > currentYear - 18) {
+        throw new UserInputError("Too young for this plateform");
       }
-      //TODO:check for validity of bithday year < current year - 18 ??
       try {
         await pool.query(
           "UPDATE users SET user_birthday = $1 WHERE user_id = $2",
@@ -317,7 +318,6 @@ module.exports = {
         return false;
       }
     },
-
     // upload not complete yet need frontend ??
     //ref : https://www.youtube.com/watch?v=BcZ_ItGplfE&ab_channel=Classsed
     async uploadFile(parent, { file }) {
@@ -328,6 +328,26 @@ module.exports = {
       return {
         url: `http://localhost:4000/images/${filename}`,
       };
+    },
+
+    async addInterrests(_, { interests }, context, info) {
+      const user = checkAuth(context);
+      const obj = JSON.parse(JSON.stringify(interests));
+      const interesTtab = [];
+      //console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        interesTtab.push(...Object.values(obj[i]));
+      }
+      //console.log(interesTtab);
+      try {
+        await pool.query(
+          "UPDATE users SET user_interests = $1 WHERE user_id = $2",
+          [interesTtab, user.id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      return true;
     },
   },
 };

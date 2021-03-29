@@ -26,14 +26,16 @@ CREATE TABLE users
     user_sexual_preference sexual_preference,
     user_biography VARCHAR(600),
     user_birthday DATE,
-    user_last_connected TIMESTAMP
+    user_last_connected TIMESTAMP,
+    user_interests TEXT
+    []
     -- user_biography VARCHAR(255) NOT NULL
     --????????
 );
 
---insert fake users
+    --insert fake users
 
-INSERT INTO users
-    (user_first_name, user_last_name, username, user_email, user_password)
-VALUES
-    ("first_name", "last_name", "username", "email@email.com", "password");
+    INSERT INTO users
+        (user_first_name, user_last_name, username, user_email, user_password)
+    VALUES
+        ("first_name", "last_name", "username", "email@email.com", "password");
