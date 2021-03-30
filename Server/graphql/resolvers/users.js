@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();
 
 const pool = require("../../db");
 const {
@@ -338,15 +340,61 @@ module.exports = {
       for (let i = 0; i < obj.length; i++) {
         interesTtab.push(...Object.values(obj[i]));
       }
-      //console.log(interesTtab);
+      console.log(interesTtab);
       try {
         await pool.query(
           "UPDATE users SET user_interests = $1 WHERE user_id = $2",
           [interesTtab, user.id]
         );
+        return true;
       } catch (error) {
         console.log(error);
+        return false;
       }
+    },
+
+    async addInterrest(_, { interest }, context) {
+      const user = checkAuth(context);
+      try {
+        //TODO:valide interest input
+        await pool.query(
+          "UPDATE users SET user_interests = array_append(user_interests, $1) WHERE user_id = $2",
+          [interest, user.id]
+        );
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
+
+    //https://ip-api.com/docs/api:json
+    async forceGeolocation(_, {}, context) {
+      const user = checkAuth(context);
+      var endpoint = "http://ip-api.com/json/?fields=status,message,lat,lon";
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = async function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var response = JSON.parse(this.responseText);
+          if (response.status !== "success") {
+            console.log("query failed: " + response.message);
+            return false;
+          }
+          try {
+            await pool.query(
+              "UPDATE users SET user_lat = $1, user_lon = $2 WHERE user_id = $3",
+              [response.lat, response.lon, user.id]
+            );
+          } catch (e) {
+            console.log(e);
+            return false;
+          }
+          //console.log(response.lat);
+          //console.log(response.lon);
+        }
+      };
+      xhr.open("GET", endpoint, true);
+      xhr.send();
       return true;
     },
   },

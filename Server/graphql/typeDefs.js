@@ -66,5 +66,7 @@ module.exports = gql`
     uploadFile(file: Upload!): File!
     addBirthday(birthday: String!): Boolean!
     addInterrests(interests: [InterestInput]): Boolean!
+    addInterrest(interest: String!): Boolean!
+    forceGeolocation(string: String!): Boolean!
   }
 `;

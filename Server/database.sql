@@ -28,7 +28,10 @@ CREATE TABLE users
     user_birthday DATE,
     user_last_connected TIMESTAMP,
     user_interests TEXT
-    []
+    [],
+    user_lon NUMERIC NOT NULL DEFAULT 0,
+    user_lan NUMERIC NOT NULL DEFAULT 0
+    
     -- user_biography VARCHAR(255) NOT NULL
     --????????
 );
