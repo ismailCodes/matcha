@@ -332,6 +332,7 @@ module.exports = {
       };
     },
 
+    //TODO:regex for interests : ^#[A-Za-z]+$ && lenght
     async addInterrests(_, { interests }, context, info) {
       const user = checkAuth(context);
       const obj = JSON.parse(JSON.stringify(interests));
@@ -368,10 +369,25 @@ module.exports = {
       }
     },
 
+    async removeInterrest(_, { interest }, context) {
+      const user = checkAuth(context);
+      try {
+        await pool.query(
+          "UPDATE users SET user_interests = array_remove(user_interests , $1) WHERE user_id = $2",
+          [interest, user.id]
+        );
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
+
     //https://ip-api.com/docs/api:json
     async forceGeolocation(_, {}, context) {
       const user = checkAuth(context);
-      var endpoint = "http://ip-api.com/json/?fields=status,message,lat,lon";
+      var endpoint =
+        "http://ip-api.com/json/?fields=status,message,lat,lon,city";
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = async function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -382,9 +398,10 @@ module.exports = {
           }
           try {
             await pool.query(
-              "UPDATE users SET user_lat = $1, user_lon = $2 WHERE user_id = $3",
-              [response.lat, response.lon, user.id]
+              "UPDATE users SET user_lat = $1, user_lon = $2, user_city = $3 WHERE user_id = $4",
+              [response.lat, response.lon, response.city, user.id]
             );
+            return true;
           } catch (e) {
             console.log(e);
             return false;

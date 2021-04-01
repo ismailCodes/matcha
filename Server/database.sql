@@ -23,17 +23,26 @@ CREATE TABLE users
     reset_password_token VARCHAR(255) NOT NULL DEFAULT 0,--??????
     reset_password_expiry VARCHAR(255),
     user_gender gender,
-    user_sexual_preference sexual_preference,
+    user_sexual_preference sexual_preference DEFAULT 'Bisexual',
     user_biography VARCHAR(600),
     user_birthday DATE,
     user_last_connected TIMESTAMP,
     user_interests TEXT
     [],
     user_lon NUMERIC NOT NULL DEFAULT 0,
-    user_lan NUMERIC NOT NULL DEFAULT 0
-    
+    user_lan NUMERIC NOT NULL DEFAULT 0,
+    user_city VARCHAR
+    (255) NOT NULL
     -- user_biography VARCHAR(255) NOT NULL
     --????????
+);
+
+    CREATE TABLE likes (
+    like_id INT GENERATED ALWAYS AS IDENTITY,
+    from_user_id VARCHAR
+    (255) NOT NULL,
+    to_user_id VARCHAR
+    (255) NOT NULL
 );
 
     --insert fake users

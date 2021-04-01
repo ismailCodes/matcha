@@ -67,6 +67,7 @@ module.exports = gql`
     addBirthday(birthday: String!): Boolean!
     addInterrests(interests: [InterestInput]): Boolean!
     addInterrest(interest: String!): Boolean!
+    removeInterrest(interest: String!): Boolean!
     forceGeolocation(string: String!): Boolean!
   }
 `;
