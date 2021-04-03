@@ -1,12 +1,10 @@
-import Layout from '../components/Layout';
-import larbi from '../images/larbi.jpg';
-import larbi2 from '../images/larbi2.jpg';
-import larbi3 from '../images/larbi3.jpeg';
 import { loremIpsum } from '../data/loremIpsum';
-import ProfileComp from '../components/Profiler';
+import Navbar from '../components/Navbar';
+import women1 from '../images/women1.jpg';
+import ProfileContainer from '../components/ProfileContainer';
 
 const profile = {
-  images: [larbi, larbi2, larbi3],
+  cover: women1,
   edit: true,
   name: 'Larbi LHILALI',
   description: 'Managing director at 1337 FIL',
@@ -14,13 +12,20 @@ const profile = {
   sexuality: 'M',
   bio: loremIpsum,
   tags: ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8'],
+  fameRate: 98216,
+  status: 'online',
 };
 
 function Profile() {
   return (
-    <Layout>
-      <ProfileComp {...profile} />
-    </Layout>
+    <div
+      style={{
+        minHeight: '300px',
+      }}
+    >
+      <Navbar type='transparent fixed' />
+      <ProfileContainer profile={profile} />
+    </div>
   );
 }
 
