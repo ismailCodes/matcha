@@ -93,7 +93,7 @@ function Register() {
                   </div>
                   <input
                     name='firstName'
-                    className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
+                    className='my-2 px-4 w-full text-base py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                     type=''
                     placeholder='John'
                     ref={register(firstNameErrors)}
@@ -110,7 +110,7 @@ function Register() {
                   </div>
                   <input
                     name='lastName'
-                    className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
+                    className='my-2 px-4 w-full text-base py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                     type=''
                     placeholder='Doe'
                     ref={register(lastNameErrors)}
@@ -128,15 +128,13 @@ function Register() {
                 </div>
                 <input
                   name='email'
-                  className='w-full text-lg py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
+                  className='my-2 px-4 w-full text-base py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                   type=''
                   placeholder='mike@gmail.com'
                   ref={register(emailErrors)}
                 />
                 {errors.email && (
-                  <p className='text-red-400 pt-1 text-sm'>
-                    {errors.email.message}
-                  </p>
+                  <p className='text-red-400 pt-1 text-sm'>{errors.email.message}</p>
                 )}
               </div>
               <div className='mt-8 relative'>
@@ -148,13 +146,13 @@ function Register() {
                 <div className='flex items-center relative'>
                   <input
                     name='password'
-                    className='w-full flex-grow flex-shrink text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-red-500 pr-16'
+                    className='my-2 px-4 w-full text-base py-2  border-b border-gray-300 focus:outline-none focus:border-red-500'
                     type={hidden ? 'password' : 'text'}
                     placeholder='Enter your password'
                     ref={register(passwordErrors)}
                   />
                   <span
-                    className='absolute right-0'
+                    className='absolute right-2'
                     onClick={() => setHidden(!hidden)}
                   >
                     <label className='bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label select-none'>
