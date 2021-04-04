@@ -1,6 +1,6 @@
 import { loremIpsum } from '../data/loremIpsum';
 import Navbar from '../components/Navbar';
-import women1 from '../images/women1.jpg';
+import women1 from '../images/women2.jpg';
 import ProfileContainer from '../components/ProfileContainer';
 
 const profile = {
