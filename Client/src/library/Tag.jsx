@@ -1,9 +1,8 @@
-import { getRandomColor } from '../utils/getRandomColor';
-
 function Tag({ text }) {
-  const color = getRandomColor();
   return (
-    <button className={`${color} text-white p-1 rounded-md px-2 m-1 text-sm`}>
+    <button
+      className={`bg-gray-900 text-white py-1 px-2 rounded-xl m-1 text-sm hover:bg-gray-800 transform hover:scale-105`}
+    >
       {text}
     </button>
   );
