@@ -33,7 +33,7 @@ function ProfileContainer({ profile }) {
   const { cover, fameRate, status, pictures, tags } = profile;
   const { data, loading } = useColor(cover, 'rgbArray');
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [pictureModalOpen, setPictureModalOpen] = useState(true);
+  const [pictureModalOpen, setPictureModalOpen] = useState(false);
   const [currentPicure, setCurrentPicture] = useState(0);
 
   const getDragRate = () => {
