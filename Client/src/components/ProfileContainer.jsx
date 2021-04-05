@@ -2,10 +2,11 @@ import { useColor } from 'color-thief-react';
 import FameRateButton from './FameRateButton.jsx';
 import EditButton from './EditButton';
 import { ImLocation } from 'react-icons/im';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CarouselItem from 'src/components/CarouselItem';
 import Tag from 'src/library/Tag';
 import { useState } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const editModalVariants = {
   closed: {
@@ -32,6 +33,8 @@ function ProfileContainer({ profile }) {
   const { cover, fameRate, status, pictures, tags } = profile;
   const { data, loading } = useColor(cover, 'rgbArray');
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [pictureModalOpen, setPictureModalOpen] = useState(true);
+  const [currentPicure, setCurrentPicture] = useState(0);
 
   const getDragRate = () => {
     if (pictures.length <= 2) return 0;
@@ -60,6 +63,8 @@ function ProfileContainer({ profile }) {
         />
         <FameRateButton fameRate={fameRate} status={status} />
         <EditButton setEditModalOpen={setEditModalOpen} />
+
+        {/* edit modal */}
         <motion.div
           className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-40 absolute top-0 flex justify-center py-4 px-2 ${
             editModalOpen ? '' : 'hidden'
@@ -82,7 +87,30 @@ function ProfileContainer({ profile }) {
             </div>
           </div>
         </motion.div>
+
+        {/* picture modal */}
+        <motion.div
+          className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-70 absolute top-0 flex flex-col justify-center py-4 px-2 ${
+            pictureModalOpen ? '' : 'hidden'
+          }`}
+          variants={editModalVariants}
+          animate={pictureModalOpen ? 'open' : 'closed'}
+        >
+          <div className='h-10 w-10 flex' onClick={() => setPictureModalOpen(false)}>
+            <AiOutlineClose className='w-full h-full p-1 text-white cursor-pointer' />
+          </div>
+          <div
+            className='h-full w-full bg-transparent rounded-xl py-3 px-2 flex flex-grow'
+            style={{
+              backgroundImage: `url(${pictures[currentPicure]})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+        </motion.div>
       </div>
+
       {/* Personal Infos */}
       <div className='flex flex-col justify-center items-center py-2 overflow-hidden'>
         <div className='text-xl font-bold'>BullShit Champion</div>
@@ -115,7 +143,13 @@ function ProfileContainer({ profile }) {
           dragConstraints={{ left: negate(getDragRate()), right: getDragRate() }}
         >
           {pictures.map((img) => (
-            <CarouselItem key={pictures.indexOf(img)} image={img} />
+            <CarouselItem
+              key={pictures.indexOf(img)}
+              image={img}
+              setCurrentPicture={setCurrentPicture}
+              setPictureModalOpen={setPictureModalOpen}
+              index={pictures.indexOf(img)}
+            />
           ))}
         </motion.div>
         <div className='w-11/12 my-3 flex flex-wrap justify-center'>

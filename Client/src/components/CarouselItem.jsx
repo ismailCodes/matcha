@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CarouselItem({ image }) {
+function CarouselItem({ index, image, setCurrentPicture, setPictureModalOpen }) {
   return (
     <div
       className='rounded-xl mx-1 shadow-lg'
@@ -9,6 +9,10 @@ function CarouselItem({ image }) {
         width: '160px',
         height: '160px',
         backgroundSize: 'cover',
+      }}
+      onClick={() => {
+        setCurrentPicture(index);
+        setPictureModalOpen(true);
       }}
     />
   );
