@@ -149,14 +149,14 @@ function EditProfileModal({ editModalOpen, modalVariants, setEditModalOpen }) {
           </div>
 
           <div className='flex flex-col justify-center relative bg-transparent my-2'>
-            <label htmlFor='description' className='py-1'>
+            <label htmlFor='description' className='py-2'>
               Biography
             </label>
             <textarea
               style={{ resize: 'none' }}
               name='bio'
               rows='4'
-              className='bg-transparent w-full border shadow-lg p-2'
+              className='bg-transparent w-full border shadow-lg p-2 rounded-lg'
             ></textarea>
           </div>
           <div className='flex items-end justify-end mt-8'>
