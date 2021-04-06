@@ -7,8 +7,10 @@ import CarouselItem from 'src/components/CarouselItem';
 import Tag from 'src/library/Tag';
 import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
+import NotificationModal from './NotificationModal.jsx';
+import EditProfileModal from './EditProfileModal.jsx';
 
-const editModalVariants = {
+const modalVariants = {
   closed: {
     opacity: 0,
     width: 0,
@@ -24,17 +26,54 @@ const editModalVariants = {
   },
 };
 
+const notificationModalVariants = {
+  closed: {
+    opacity: 0,
+    width: 0,
+    height: 0,
+    right: 0,
+  },
+  open: {
+    opacity: 1,
+    width: '100%',
+    height: '100vh',
+    transition: {
+      stiffness: 100,
+    },
+  },
+};
+
+const reportModalVariants = {
+  closed: {
+    opacity: 0,
+    y: '5vh',
+  },
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+    },
+  },
+};
+
 function rgbToRgba(rgbArray, alpha, loading) {
   let [r, g, b] = loading ? [0, 0, 0] : rgbArray;
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function ProfileContainer({ profile }) {
+function ProfileContainer({
+  edit,
+  profile,
+  notificationModalOpen,
+  setNotificationModalOpen,
+}) {
   const { cover, fameRate, status, pictures, tags } = profile;
   const { data, loading } = useColor(cover, 'rgbArray');
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [pictureModalOpen, setPictureModalOpen] = useState(true);
+  const [pictureModalOpen, setPictureModalOpen] = useState(false);
   const [currentPicure, setCurrentPicture] = useState(0);
+  const [reportOpen, setReportOpen] = useState(false);
 
   const getDragRate = () => {
     if (pictures.length <= 2) return 0;
@@ -65,35 +104,18 @@ function ProfileContainer({ profile }) {
         <EditButton setEditModalOpen={setEditModalOpen} />
 
         {/* edit modal */}
-        <motion.div
-          className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-40 absolute top-0 flex justify-center py-4 px-2 ${
-            editModalOpen ? '' : 'hidden'
-          }`}
-          variants={editModalVariants}
-          animate={editModalOpen ? 'open' : 'closed'}
-        >
-          <div className='h-full w-full bg-gray-50 rounded-xl py-3 px-2 flex flex-col'>
-            <div className='text-xl px-3'>Edit profile</div>
-            <div className='flex flex-grow items-end justify-end'>
-              <div
-                className='text-roseMatcha border border-roseMatcha px-3 py-1 rounded-lg mx-2 w-20 text-center '
-                onClick={() => setEditModalOpen(false)}
-              >
-                Cancel
-              </div>
-              <div className='bg-roseMatcha border border-roseMatcha px-3 py-1 rounded-lg mx-2 text-gray-50 w-20 text-center'>
-                Save
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        <EditProfileModal
+          editModalOpen={editModalOpen}
+          modalVariant={modalVariants}
+          setEditModalOpen={setEditModalOpen}
+        />
 
         {/* picture modal */}
         <motion.div
-          className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-70 absolute top-0 flex flex-col justify-center py-4 px-2 ${
+          className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-70 fixed top-0 flex flex-col justify-center py-4 px-2 ${
             pictureModalOpen ? '' : 'hidden'
           }`}
-          variants={editModalVariants}
+          variants={modalVariants}
           animate={pictureModalOpen ? 'open' : 'closed'}
         >
           <div className='h-10 w-10 flex' onClick={() => setPictureModalOpen(false)}>
@@ -110,6 +132,13 @@ function ProfileContainer({ profile }) {
           />
         </motion.div>
       </div>
+
+      {/* notifications Modal */}
+      <NotificationModal
+        notificationModalOpen={notificationModalOpen}
+        notificationModalVariants={notificationModalVariants}
+        setNotificationModalOpen={setNotificationModalOpen}
+      />
 
       {/* Personal Infos */}
       <div className='flex flex-col justify-center items-center py-2 overflow-hidden'>
@@ -138,7 +167,7 @@ function ProfileContainer({ profile }) {
           condimentum orci, et rutrum libero ultricies ultrices.
         </div>
         <motion.div
-          className='flex mt-4 overflow-hidden'
+          className='flex py-5 overflow-hidden'
           drag='x'
           dragConstraints={{ left: negate(getDragRate()), right: getDragRate() }}
         >
@@ -152,10 +181,52 @@ function ProfileContainer({ profile }) {
             />
           ))}
         </motion.div>
-        <div className='w-11/12 my-3 flex flex-wrap justify-center'>
+        <div className='w-11/12 mb-3 flex flex-wrap justify-center bg-transparent'>
           {tags.map((tag) => {
             return <Tag key={tag} text={tag} />;
           })}
+        </div>
+        <div className='w-11/12 flex relative'>
+          <motion.div
+            className={`bg-gray-50 bg-opacity-60 absolute z-50 bottom-1 w-full h-40 pb-4 ${
+              reportOpen ? '' : 'hidden'
+            }`}
+            style={{
+              backdropFilter: 'blur(20px)',
+              borderRadius: '10px',
+              border: '1px solid rgba( 255, 255, 255, 0.18 )',
+            }}
+            variants={reportModalVariants}
+            animate={reportOpen ? 'open' : 'closed'}
+          >
+            <ul>
+              <li>
+                <div
+                  className='h-8 w-8 flex'
+                  onClick={() => setReportOpen(!reportOpen)}
+                >
+                  <AiOutlineClose
+                    className='w-full h-full p-1 text-roseMatcha cursor-pointer'
+                    onClick={() => setReportOpen(false)}
+                  />
+                </div>
+              </li>
+              <li className='text-center text-roseMatcha text-base py-2'>Report</li>
+              <li className='text-center text-roseMatcha text-base py-2'>Block</li>
+              <li className='text-center text-roseMatcha text-base py-2'>Dislike</li>
+            </ul>
+          </motion.div>
+          <div
+            className='h-10 w-10 bg-gray-500 mx-1 rounded-xl flex items-center justify-center transform rotate-90'
+            onClick={() => setReportOpen(true)}
+          >
+            <div className='transform -translate-y-1 text-gray-50 font-bold text-lg'>
+              ...
+            </div>
+          </div>
+          <div className='flex items-center justify-center h-10 bg-roseMatcha flex-grow mx-1 rounded-xl text-gray-50 text-lg font-bold'>
+            <div>Like</div>
+          </div>
         </div>
       </div>
     </>

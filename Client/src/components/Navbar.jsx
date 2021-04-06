@@ -11,13 +11,13 @@ const variants = {
   closed: { x: '-100vw' },
 };
 
-function Navbar({ type }) {
+function Navbar({ setNotificationModalOpen }) {
   const [open, setOpen] = useState(false);
   return (
     <nav
-      className={`w-full flex justify-between bg-${type} h-16 items-center px-3 z-50`}
+      className={`w-full flex justify-between bg-transparent absolute top-0 h-16 items-center px-3 z-50`}
     >
-      <div className='flex justify-start text-gray-50 w-1/3 relative'>
+      <div className='flex justify-start relative text-gray-50 w-1/3'>
         <BiMenu
           className={`h-10 w-10 ${open ? 'hidden' : ''}`}
           onClick={() => setOpen(true)}
@@ -27,7 +27,7 @@ function Navbar({ type }) {
           animate={open ? 'open' : 'closed'}
           transition={{ duration: 0.8, type: 'spring', stiffness: 80 }}
           variants={variants}
-          className={`absolute h-screen w-72 bg-gray-50 bg-opacity-60 z-40`}
+          className={`fixed h-screen w-72 bg-gray-50 bg-opacity-60 z-40 top-1`}
           style={{
             backdropFilter: 'blur(20px)',
             borderRadius: '10px',
@@ -39,7 +39,7 @@ function Navbar({ type }) {
       </div>
       <Logo />
       {/* <LgMenu /> */}
-      <SmMenu />
+      <SmMenu setNotificationModalOpen={setNotificationModalOpen} />
     </nav>
   );
 }

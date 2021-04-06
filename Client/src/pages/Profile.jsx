@@ -1,11 +1,12 @@
 import { loremIpsum } from '../data/loremIpsum';
 import Navbar from '../components/Navbar';
-import women1 from '../images/women2.jpg';
+import women1 from '../images/women1.jpg';
 import ProfileContainer from 'src/components/ProfileContainer';
 import adriana1 from 'src/images/adriana1.jpg';
 import adriana2 from 'src/images/adriana2.jpg';
 import adriana3 from 'src/images/adriana3.jpg';
 import adriana4 from 'src/images/adriana4.png';
+import { useState } from 'react';
 
 const profile = {
   cover: women1,
@@ -31,15 +32,21 @@ const profile = {
 };
 
 function Profile() {
+  const [notificationModalOpen, setNotificationModalOpen] = useState(false);
+
   return (
     <div
-      className='flex flex-col h-full'
+      className='flex flex-col'
       style={{
         minHeight: '300px',
       }}
     >
-      <Navbar type='transparent fixed' />
-      <ProfileContainer profile={profile} />
+      <Navbar setNotificationModalOpen={setNotificationModalOpen} />
+      <ProfileContainer
+        profile={profile}
+        notificationModalOpen={notificationModalOpen}
+        setNotificationModalOpen={setNotificationModalOpen}
+      />
     </div>
   );
 }
