@@ -25,16 +25,17 @@ CREATE TABLE users
     user_gender gender,
     user_sexual_preference sexual_preference DEFAULT 'Bisexual',
     user_biography VARCHAR(600),
-    user_birthday DATE,
+    user_age smallint,
     user_last_connected TIMESTAMP,
     user_interests TEXT
     [],
     user_lon NUMERIC NOT NULL DEFAULT 0,
-    user_lan NUMERIC NOT NULL DEFAULT 0,
+    user_lat NUMERIC NOT NULL DEFAULT 0,
     user_city VARCHAR
-    (255) NOT NULL
+    (255) NOT NULL DEFAULT 0,
+    user_score smallint DEFAULT 0
     -- user_biography VARCHAR(255) NOT NULL
-    --????????
+    -- ????????
 );
 
     CREATE TABLE likes (
@@ -44,10 +45,3 @@ CREATE TABLE users
     to_user_id VARCHAR
     (255) NOT NULL
 );
-
-    --insert fake users
-
-    INSERT INTO users
-        (user_first_name, user_last_name, username, user_email, user_password)
-    VALUES
-        ("first_name", "last_name", "username", "email@email.com", "password");

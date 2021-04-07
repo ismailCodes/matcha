@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require("fs");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
+var lodash = require("lodash");
 
 const pool = require("../../db");
 const {
@@ -296,7 +297,7 @@ module.exports = {
       //TODO:send confirmation email ??
       // TODO:logout user and login again..token.. ??
     },
-    async addBirthday(_, { birthday }, context, info) {
+    /*async addBirthday(_, { birthday }, context, info) {
       const user = checkAuth(context);
       var date = new Date();
       var currentYear = date.getFullYear();
@@ -319,6 +320,26 @@ module.exports = {
         console.log(error);
         return false;
       }
+    },*/
+    async addAge(_, { age }, context) {
+      const user = checkAuth(context);
+      if (!lodash.isNumber(age)) {
+        //graphql test this before by default ??
+        throw new UserInputError("Invalid Age");
+      } else if (age < 18) {
+        throw new UserInputError("Not authorized for this plateform");
+      }
+      //TODO: put limit on max age ??
+      try {
+        await pool.query("UPDATE users SET user_age = $1 WHERE user_id = $2", [
+          age,
+          user.id,
+        ]);
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
     // upload not complete yet need frontend ??
     //ref : https://www.youtube.com/watch?v=BcZ_ItGplfE&ab_channel=Classsed
@@ -331,7 +352,6 @@ module.exports = {
         url: `http://localhost:4000/images/${filename}`,
       };
     },
-
     //TODO:regex for interests : ^#[A-Za-z]+$ && lenght
     async addInterrests(_, { interests }, context, info) {
       const user = checkAuth(context);
@@ -382,7 +402,6 @@ module.exports = {
         return false;
       }
     },
-
     //https://ip-api.com/docs/api:json
     async forceGeolocation(_, {}, context) {
       const user = checkAuth(context);
@@ -413,6 +432,20 @@ module.exports = {
       xhr.open("GET", endpoint, true);
       xhr.send();
       return true;
+    },
+  },
+  Query: {
+    async browseUsers(_, context) {
+      const user = checkAuth(context);
+      try {
+        const users = await pool.query("SELECT * from users");
+        console.log(users.rows[0]);
+        return {
+          firstname: users,
+        };
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

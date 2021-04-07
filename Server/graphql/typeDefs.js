@@ -5,10 +5,6 @@ module.exports = gql`
     url: String!
   }
 
-  type Query {
-    uploads: [File]
-  }
-
   type User {
     id: ID
     firstName: String
@@ -51,6 +47,11 @@ module.exports = gql`
     interest: String!
   }
 
+  type Query {
+    uploads: [File]
+    browseUsers: User
+  }
+
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
@@ -64,7 +65,7 @@ module.exports = gql`
     addSexualPreference(sexualPreference: SexualPreference!): Boolean!
     addBiography(biography: String!): Boolean!
     uploadFile(file: Upload!): File!
-    addBirthday(birthday: String!): Boolean!
+    addAge(age: Int!): Boolean!
     addInterrests(interests: [InterestInput]): Boolean!
     addInterrest(interest: String!): Boolean!
     removeInterrest(interest: String!): Boolean!
