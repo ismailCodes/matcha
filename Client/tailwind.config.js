@@ -6,6 +6,9 @@ module.exports = {
       fontFamily: {
         montserrat: ['Montserrat'],
       },
+      colors: {
+        roseMatcha: '#F03A66',
+      },
     },
   },
   variants: {
