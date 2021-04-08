@@ -435,17 +435,29 @@ module.exports = {
     },
   },
   Query: {
-    async browseUsers(_, context) {
+    async browseUsers(_, {}, context) {
       const user = checkAuth(context);
-      try {
-        const users = await pool.query("SELECT * from users");
-        console.log(users.rows[0]);
-        return {
-          firstname: users,
-        };
-      } catch (error) {
-        console.log(error);
+      const userData = await pool.query(
+        "SELECT * from users WHERE user_id = $1",
+        [user.id]
+      );
+      let sameSexualPreference;
+
+      if (userData.rows[0].user_sexual_preference === "Bisexual") {
+        sameSexualPreference = await pool.query(
+          "SELECT * from users WHERE user_id != $1",
+          [user.id]
+        );
+      } else {
+        sameSexualPreference = await pool.query(
+          "SELECT * from users WHERE user_sexual_preference = $1 AND user_id != $2",
+          [user_data.rows[0].user_sexual_preference, user.id]
+        );
       }
+
+      //TODO:Calculate distance from all users
+      //TODO:
+      //console.log(user_data.rows[0].user_sexual_preference);
     },
   },
 };
