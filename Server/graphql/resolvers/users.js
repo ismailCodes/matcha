@@ -20,6 +20,7 @@ const {
 } = require("../../services/emailService");
 const { generateToken } = require("../../util/generateToken");
 const checkAuth = require("../../util/checkAuth");
+const { getDistanceFromLatLonInKm } = require("../../util/getDistance");
 
 module.exports = {
   Mutation: {
@@ -451,13 +452,44 @@ module.exports = {
       } else {
         sameSexualPreference = await pool.query(
           "SELECT * from users WHERE user_sexual_preference = $1 AND user_id != $2",
-          [user_data.rows[0].user_sexual_preference, user.id]
+          [userData.rows[0].user_sexual_preference, user.id]
         );
       }
 
-      //TODO:Calculate distance from all users
-      //TODO:
-      //console.log(user_data.rows[0].user_sexual_preference);
+      let user_lat = userData.rows[0].user_lat;
+      let user_lon = userData.rows[0].user_lon;
+
+      let browseSuggestions = [];
+      for (let user of sameSexualPreference.rows) {
+        browseSuggestions.push({
+          userID: user.user_id,
+          userScore: user.user_score,
+          userInterests: user.user_interests,
+          distance: getDistanceFromLatLonInKm(
+            user_lat,
+            user_lon,
+            user.user_lat,
+            user.user_lon
+          ),
+        });
+      }
+
+      browseSuggestions.sort(function (a, b) {
+        return a.distance - b.distance || a.userScore - b.userScore; // CHECK if this is true
+      });
+
+      /*
+array.sort(function (a, b) {
+    return a.resHP - b.resHP || b.resFlow - a.resFlow;
+});
+
+console.log(array);*/
+      //TODO: SORT USERS BY best match
+
+      console.log(browseSuggestions);
+
+      //console.log(sameSexualPreference);
     },
   },
+  //},
 };
