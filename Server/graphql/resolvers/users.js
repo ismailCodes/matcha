@@ -436,20 +436,20 @@ module.exports = {
     },
   },
   Query: {
-    async browseUsers(_, {}, context) {
+    async browseUsers(_, { minDistance, maxDistance }, context) {
       const user = checkAuth(context);
       const userData = await pool.query(
         "SELECT * from users WHERE user_id = $1",
         [user.id]
       );
       let sameSexualPreference;
-
       if (userData.rows[0].user_sexual_preference === "Bisexual") {
         sameSexualPreference = await pool.query(
           "SELECT * from users WHERE user_id != $1",
           [user.id]
         );
       } else {
+        //TODO: MATCH gender && check for empty arrays
         sameSexualPreference = await pool.query(
           "SELECT * from users WHERE user_sexual_preference = $1 AND user_id != $2",
           [userData.rows[0].user_sexual_preference, user.id]
@@ -460,34 +460,43 @@ module.exports = {
       let user_lon = userData.rows[0].user_lon;
 
       let browseSuggestions = [];
+      //TODO:Push relevant data to array like username distance photo of user...
       for (let user of sameSexualPreference.rows) {
         browseSuggestions.push({
-          userID: user.user_id,
+          id: user.user_id,
           userScore: user.user_score,
           userInterests: user.user_interests,
-          distance: getDistanceFromLatLonInKm(
-            user_lat,
-            user_lon,
-            user.user_lat,
-            user.user_lon
+          distance: Math.ceil(
+            getDistanceFromLatLonInKm(
+              user_lat,
+              user_lon,
+              user.user_lat,
+              user.user_lon
+            )
           ),
+          interestsInCommon: userData.rows[0].user_interests.filter((value) =>
+            user.user_interests.includes(value)
+          ).length,
         });
       }
 
       browseSuggestions.sort(function (a, b) {
-        return a.distance - b.distance || a.userScore - b.userScore; // CHECK if this is true
+        return (
+          a.distance - b.distance ||
+          b.interestsInCommon - a.interestsInCommon ||
+          b.userScore - a.userScore
+        ); // CHECK if this is true
       });
-
-      /*
-array.sort(function (a, b) {
-    return a.resHP - b.resHP || b.resFlow - a.resFlow;
-});
-
-console.log(array);*/
-      //TODO: SORT USERS BY best match
-
-      console.log(browseSuggestions);
-
+      //testing arguments for search
+      if (minDistance !== undefined) {
+        if (browseSuggestions[0].distance < minDistance) {
+          console.log("HEEEEERRRREEEEE");
+        }
+      }
+      //end of testing arguments for search
+      console.table(browseSuggestions);
+      //TODO: return relevant
+      return browseSuggestions;
       //console.log(sameSexualPreference);
     },
   },

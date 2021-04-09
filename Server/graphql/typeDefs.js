@@ -12,6 +12,7 @@ module.exports = gql`
     username: String
     email: String
     token: String
+    distance: Int
   }
 
   input RegisterInput {
@@ -49,7 +50,7 @@ module.exports = gql`
 
   type Query {
     uploads: [File]
-    browseUsers: User
+    browseUsers(minDistance: Int, maxDistance: Int): [User]
   }
 
   type Mutation {
