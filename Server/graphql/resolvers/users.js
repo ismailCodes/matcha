@@ -485,19 +485,19 @@ module.exports = {
           a.distance - b.distance ||
           b.interestsInCommon - a.interestsInCommon ||
           b.userScore - a.userScore
-        ); // CHECK if this is true
+        ); // TODO:CHECK if this is true
       });
       //testing arguments for search
       if (minDistance !== undefined) {
-        if (browseSuggestions[0].distance < minDistance) {
-          console.log("HEEEEERRRREEEEE");
-        }
+        browseSuggestions = lodash.reject(browseSuggestions, function (el) {
+          return el.distance > minDistance;
+        });
       }
+      //TODO:Do the same for all search criteria and check input validity
       //end of testing arguments for search
       console.table(browseSuggestions);
-      //TODO: return relevant
+      //TODO: return relevant info
       return browseSuggestions;
-      //console.log(sameSexualPreference);
     },
   },
   //},
