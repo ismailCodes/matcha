@@ -63,9 +63,9 @@ module.exports = gql`
     interests: [String]
   }
 
-  enum Filter {
-    min
-    max
+  input Filter {
+    min: Int
+    max: Int
   }
   enum Sort {
     asc

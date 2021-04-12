@@ -498,6 +498,78 @@ module.exports = {
       //end of testing arguments for search
       const argsFormatted = JSON.parse(JSON.stringify(args));
       console.log(argsFormatted);
+      if (argsFormatted.hasOwnProperty("filterBy")) {
+        if (
+          argsFormatted.filterBy.hasOwnProperty("age") &&
+          argsFormatted.filterBy.age.hasOwnProperty("min")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.age < argsFormatted.filterBy.age.min;
+          });
+        }
+        if (
+          argsFormatted.filterBy.hasOwnProperty("age") &&
+          argsFormatted.filterBy.age.hasOwnProperty("max")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.age > argsFormatted.filterBy.age.max;
+          });
+        }
+
+        if (
+          argsFormatted.filterBy.hasOwnProperty("distance") &&
+          argsFormatted.filterBy.distance.hasOwnProperty("min")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.distance < argsFormatted.filterBy.distance.min;
+          });
+        }
+        if (
+          argsFormatted.filterBy.hasOwnProperty("distance") &&
+          argsFormatted.filterBy.distance.hasOwnProperty("max")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.distance > argsFormatted.filterBy.distance.max;
+          });
+        }
+
+        if (
+          argsFormatted.filterBy.hasOwnProperty("score") &&
+          argsFormatted.filterBy.score.hasOwnProperty("min")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.score < argsFormatted.filterBy.score.min;
+          });
+        }
+        if (
+          argsFormatted.filterBy.hasOwnProperty("score") &&
+          argsFormatted.filterBy.score.hasOwnProperty("max")
+        ) {
+          browseSuggestions = lodash.reject(browseSuggestions, function (a) {
+            return a.score > argsFormatted.filterBy.score.max;
+          });
+        }
+
+        /*userData.rows[0].user_interests.filter((value) =>
+            user.user_interests.includes(value)
+          ).length*/
+
+        if (
+          argsFormatted.filterBy.hasOwnProperty("interests") &&
+          argsFormatted.filterBy.interests.length !== 0
+        ) {
+          for (let i = 0; i < browseSuggestions.length; i++) {
+            if (
+              browseSuggestions[i].interests.filter((value) =>
+                argsFormatted.filterBy.interests.includes(value)
+              ).length === 0
+            ) {
+              delete browseSuggestions[i];
+            }
+          }
+        }
+      }
+
       if (argsFormatted.hasOwnProperty("orderBy")) {
         if (
           argsFormatted.orderBy.hasOwnProperty("age") &&
