@@ -13,6 +13,7 @@ module.exports = gql`
     email: String
     token: String
     distance: Int
+    age: Int
   }
 
   input RegisterInput {
@@ -48,9 +49,32 @@ module.exports = gql`
     interest: String!
   }
 
+  input OrderByInput {
+    age: Sort
+    distance: Sort
+    score: Sort
+    interests: Sort
+  }
+
+  input FilterByInput {
+    age: Filter
+    distance: Filter
+    score: Filter
+    interests: [String]
+  }
+
+  enum Filter {
+    min
+    max
+  }
+  enum Sort {
+    asc
+    desc
+  }
+
   type Query {
     uploads: [File]
-    browseUsers(minDistance: Int, maxDistance: Int): [User]
+    browseUsers(orderBy: OrderByInput, filterBy: FilterByInput): [User]
   }
 
   type Mutation {

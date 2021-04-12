@@ -436,7 +436,7 @@ module.exports = {
     },
   },
   Query: {
-    async browseUsers(_, { minDistance, maxDistance }, context) {
+    async browseUsers(_, args, context) {
       const user = checkAuth(context);
       const userData = await pool.query(
         "SELECT * from users WHERE user_id = $1",
@@ -464,8 +464,9 @@ module.exports = {
       for (let user of sameSexualPreference.rows) {
         browseSuggestions.push({
           id: user.user_id,
-          userScore: user.user_score,
-          userInterests: user.user_interests,
+          age: user.user_age,
+          score: user.user_score,
+          interests: user.user_interests,
           distance: Math.ceil(
             getDistanceFromLatLonInKm(
               user_lat,
@@ -488,13 +489,76 @@ module.exports = {
         ); // TODO:CHECK if this is true
       });
       //testing arguments for search
-      if (minDistance !== undefined) {
+      /* if (minDistance !== undefined) {
         browseSuggestions = lodash.reject(browseSuggestions, function (el) {
           return el.distance > minDistance;
         });
-      }
+      } */
       //TODO:Do the same for all search criteria and check input validity
       //end of testing arguments for search
+      const argsFormatted = JSON.parse(JSON.stringify(args));
+      console.log(argsFormatted);
+      if (argsFormatted.hasOwnProperty("orderBy")) {
+        if (
+          argsFormatted.orderBy.hasOwnProperty("age") &&
+          argsFormatted.orderBy.age === "desc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return b.age - a.age;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("age") &&
+          argsFormatted.orderBy.age === "asc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return a.age - b.age;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("distance") &&
+          argsFormatted.orderBy.distance === "desc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return b.distance - a.distance;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("distance") &&
+          argsFormatted.orderBy.distance === "asc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return a.distance - b.distance;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("score") &&
+          argsFormatted.orderBy.score === "desc"
+        ) {
+          console.log("sdfsdfsdF");
+          browseSuggestions.sort(function (a, b) {
+            return b.score - a.score;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("score") &&
+          argsFormatted.orderBy.score === "asc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return a.score - b.score;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("interests") &&
+          argsFormatted.orderBy.interests === "desc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return b.interestsInCommon - a.interestsInCommon;
+          });
+        } else if (
+          argsFormatted.orderBy.hasOwnProperty("interests") &&
+          argsFormatted.orderBy.interests === "asc"
+        ) {
+          browseSuggestions.sort(function (a, b) {
+            return a.interestsInCommon - b.interestsInCommon;
+          });
+        }
+      }
+
       console.table(browseSuggestions);
       //TODO: return relevant info
       return browseSuggestions;
