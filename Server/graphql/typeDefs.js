@@ -75,6 +75,7 @@ module.exports = gql`
   type Query {
     uploads: [File]
     browseUsers(orderBy: OrderByInput, filterBy: FilterByInput): [User]
+    checkProfile(profileId: ID): User
   }
 
   type Mutation {
@@ -95,5 +96,8 @@ module.exports = gql`
     addInterrest(interest: String!): Boolean!
     removeInterrest(interest: String!): Boolean!
     forceGeolocation(string: String!): Boolean!
+    likeUser(userToLikeId: String!): Boolean!
+    unLikeUser(userToUnlikeId: String!): Boolean!
+    blockUser(userToBlockId: String!): Boolean!
   }
 `;

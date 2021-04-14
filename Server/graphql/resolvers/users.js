@@ -434,6 +434,94 @@ module.exports = {
       xhr.send();
       return true;
     },
+
+    async blockUser(_, { userToBlockId }, context) {
+      const user = checkAuth(context);
+
+      const checkUserExists = await pool.query(
+        "SELECT user_id from users WHERE user_id = $1",
+        [userToBlockId]
+      );
+      if (checkUserExists.rows.length === 0) {
+        throw new Error("User does not exist");
+      }
+
+      const checkUserAlreadyBlocked = await pool.query(
+        "SELECT block_id FROM blocks WHERE from_user_id = $1 AND to_user_id = $2",
+        [user.id, userToBlockId]
+      );
+      if (checkUserAlreadyBlocked.rows.length !== 0) {
+        throw new UserInputError("Already Blocked this user");
+      } else {
+        await pool.query(
+          "INSERT into blocks (from_user_id, to_user_id) VALUES ($1, $2)",
+          [user.id, userToBlockId]
+        );
+      }
+      return true;
+    },
+
+    async likeUser(_, { userToLikeId }, context) {
+      const user = checkAuth(context);
+      const checkUserExists = await pool.query(
+        "SELECT user_id from users WHERE user_id = $1",
+        [userToLikeId]
+      );
+      if (checkUserExists.rows.length === 0) {
+        throw new Error("User does not exist");
+      }
+      const checkUserAlreadyLiked = await pool.query(
+        "SELECT like_id FROM likes WHERE from_user_id = $1 AND to_user_id = $2",
+        [user.id, userToLikeId]
+      );
+      if (checkUserAlreadyLiked.rows.length !== 0) {
+        throw new UserInputError("Already liked this user");
+      }
+      const checkBlock = await pool.query(
+        "SELECT block_id FROM blocks WHERE from_user_id = $1 AND to_user_id = $2",
+        [userToLikeId, user.id]
+      );
+      if (checkBlock.rows.length !== 0) {
+        throw new UserInputError("Can't like this user");
+      } else {
+        await pool.query(
+          "INSERT into likes (from_user_id, to_user_id) VALUES ($1, $2)",
+          [user.id, userToLikeId]
+        );
+      }
+      return true;
+    },
+
+    async unLikeUser(_, { userToUnlikeId }, context) {
+      const user = checkAuth(context);
+      const checkUserExists = await pool.query(
+        "SELECT user_id from users WHERE user_id = $1",
+        [userToUnlikeId]
+      );
+      if (checkUserExists.rows.length === 0) {
+        throw new Error("User does not exist");
+      }
+      const checkUserAlreadyLiked = await pool.query(
+        "SELECT like_id FROM likes WHERE from_user_id = $1 AND to_user_id = $2",
+        [user.id, userToUnlikeId]
+      );
+      if (checkUserAlreadyLiked.rows.length === 0) {
+        throw new UserInputError("User not liked yet");
+      }
+      const checkBlock = await pool.query(
+        "SELECT block_id FROM blocks WHERE from_user_id = $1 AND to_user_id = $2",
+        [userToUnlikeId, user.id]
+      );
+      if (checkBlock.rows.length !== 0) {
+        throw new UserInputError("Can't unlike this user");
+      } else {
+        await pool.query(
+          "DELETE FROM likes WHERE from_user_id = $1 AND to_user_id = $2",
+          [user.id, userToUnlikeId]
+        );
+      }
+      return true;
+    },
   },
   Query: {
     async browseUsers(_, args, context) {
@@ -634,6 +722,20 @@ module.exports = {
       console.table(browseSuggestions);
       //TODO: return relevant info
       return browseSuggestions;
+    },
+
+    //TODO: Not complete yet
+    async checkProfile(_, { profileId }, context) {
+      const user = checkAuth(context);
+      try {
+        // TODO:fetch only complete users and not blocked users
+        const userToCheck = await pool.query(
+          "SELECT * from Users WHERE user_id = $1",
+          [profileId]
+        );
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   //},
