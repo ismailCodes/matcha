@@ -72,6 +72,10 @@ module.exports = gql`
     desc
   }
 
+  type Like {
+    from: String
+  }
+
   type Query {
     uploads: [File]
     browseUsers(orderBy: OrderByInput, filterBy: FilterByInput): [User]
@@ -87,6 +91,7 @@ module.exports = gql`
     modifyFirstName(firstName: String!): Boolean!
     modifyLastName(lastName: String!): Boolean!
     modifyEmail(email: String!): Boolean!
+    modifyPosition(lat: Float!, lon: Float!): Boolean!
     addGender(gender: Gender!): Boolean!
     addSexualPreference(sexualPreference: SexualPreference!): Boolean!
     addBiography(biography: String!): Boolean!
@@ -99,5 +104,9 @@ module.exports = gql`
     likeUser(userToLikeId: String!): Boolean!
     unLikeUser(userToUnlikeId: String!): Boolean!
     blockUser(userToBlockId: String!): Boolean!
+  }
+
+  type Subscription {
+    newLike: Like
   }
 `;

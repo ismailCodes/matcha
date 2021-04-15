@@ -7,4 +7,7 @@ module.exports = {
   Query: {
     ...usersResolvers.Query,
   },
+  Subscription: {
+    ...usersResolvers.Subscription,
+  },
 };

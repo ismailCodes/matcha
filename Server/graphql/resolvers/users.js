@@ -22,6 +22,14 @@ const { generateToken } = require("../../util/generateToken");
 const checkAuth = require("../../util/checkAuth");
 const { getDistanceFromLatLonInKm } = require("../../util/getDistance");
 
+function isLatitude(lat) {
+  return isFinite(lat) && Math.abs(lat) <= 90;
+}
+
+function isLongitude(lng) {
+  return isFinite(lng) && Math.abs(lng) <= 180;
+}
+
 module.exports = {
   Mutation: {
     async login(_, { username, password }) {
@@ -298,6 +306,23 @@ module.exports = {
       //TODO:send confirmation email ??
       // TODO:logout user and login again..token.. ??
     },
+
+    async modifyPosition(_, { lat, lon }, context) {
+      const user = checkAuth(context);
+      if (!isLatitude(lat) || !isLongitude(lon)) {
+        throw new UserInputError("Invalid lat/lon");
+      }
+      try {
+        await pool.query(
+          "UPDATE users SET user_lat = $1 ,user_lon = $2 WHERE user_id = $3",
+          [lat, lon, user.id]
+        );
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
     /*async addBirthday(_, { birthday }, context, info) {
       const user = checkAuth(context);
       var date = new Date();
@@ -489,6 +514,10 @@ module.exports = {
           [user.id, userToLikeId]
         );
       }
+      //TODO:change return of like.. for notifications..
+      context.pubsub.publish("NEW_LIKE", {
+        from: user.id,
+      });
       return true;
     },
 
@@ -756,8 +785,14 @@ module.exports = {
         lastName: checkUser.rows[0].user_last_name,
         username: checkUser.rows[0].username,
         age: checkUser.rows[0].user_age,
+        //TODO:RETURN other infos of user
       };
     },
   },
   //},
+  Subscription: {
+    newLike: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("NEW_LIKE"),
+    },
+  },
 };
