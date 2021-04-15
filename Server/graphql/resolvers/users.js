@@ -724,18 +724,39 @@ module.exports = {
       return browseSuggestions;
     },
 
-    //TODO: Not complete yet
+    //TODO: check complete profiles
     async checkProfile(_, { profileId }, context) {
       const user = checkAuth(context);
+      const checkUser = await pool.query(
+        "SELECT * from users WHERE user_id = $1",
+        [profileId]
+      );
+      if (checkUser.rows.length === 0) {
+        throw new Error("User does not exist");
+      }
+      const checkBlock = await pool.query(
+        "SELECT block_id FROM blocks WHERE from_user_id = $1 AND to_user_id = $2",
+        [profileId, user.id]
+      );
+      if (checkBlock.rows.length !== 0) {
+        throw new Error("Can't see the profile of this user");
+      }
       try {
-        // TODO:fetch only complete users and not blocked users
-        const userToCheck = await pool.query(
-          "SELECT * from Users WHERE user_id = $1",
-          [profileId]
+        //TODO:IGNORE DUPLICATE IN QUERY
+        await pool.query(
+          "INSERT into profile_look (from_user_id, to_user_id) VALUES ($1, $2)",
+          [user.id, profileId]
         );
       } catch (error) {
         console.log(error);
+        return null; // TODO: check what to return
       }
+      return {
+        firstName: checkUser.rows[0].user_first_name,
+        lastName: checkUser.rows[0].user_last_name,
+        username: checkUser.rows[0].username,
+        age: checkUser.rows[0].user_age,
+      };
     },
   },
   //},

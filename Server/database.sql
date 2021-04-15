@@ -54,3 +54,11 @@ CREATE TABLE users
     to_user_id VARCHAR
     (255) NOT NULL
 );
+
+    CREATE TABLE profile_look (
+    look_id INT GENERATED ALWAYS AS IDENTITY,
+    from_user_id VARCHAR
+    (255) NOT NULL,
+    to_user_id VARCHAR
+    (255) NOT NULL
+    );
