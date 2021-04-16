@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import NotificationModal from './NotificationModal.jsx';
 import EditProfileModal from './EditProfileModal.jsx';
+import { useRef } from 'react';
 
 const modalVariants = {
   closed: {
@@ -67,13 +68,15 @@ function ProfileContainer({
   profile,
   notificationModalOpen,
   setNotificationModalOpen,
+  editModalOpen,
+  setEditModalOpen,
 }) {
   const { cover, fameRate, status, pictures, tags } = profile;
   const { data, loading } = useColor(cover, 'rgbArray');
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const [pictureModalOpen, setPictureModalOpen] = useState(false);
   const [currentPicure, setCurrentPicture] = useState(0);
   const [reportOpen, setReportOpen] = useState(false);
+  let isDragging = useRef(false);
 
   const getDragRate = () => {
     if (pictures.length <= 2) return 0;
@@ -166,10 +169,21 @@ function ProfileContainer({
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc convallis
           condimentum orci, et rutrum libero ultricies ultrices.
         </div>
+
+        {/* Carousel */}
         <motion.div
           className='flex py-5 overflow-hidden'
           drag='x'
           dragConstraints={{ left: negate(getDragRate()), right: getDragRate() }}
+          onDragStart={() => {
+            isDragging.current = true;
+          }}
+          onDragEnd={() => {
+            setTimeout(() => {
+              isDragging.current = false;
+            }, 150);
+            console.log(isDragging.current);
+          }}
         >
           {pictures.map((img) => (
             <CarouselItem
@@ -178,9 +192,11 @@ function ProfileContainer({
               setCurrentPicture={setCurrentPicture}
               setPictureModalOpen={setPictureModalOpen}
               index={pictures.indexOf(img)}
+              isDragging={isDragging}
             />
           ))}
         </motion.div>
+
         <div className='w-11/12 mb-3 flex flex-wrap justify-center bg-transparent'>
           {tags.map((tag) => {
             return <Tag key={tag} text={tag} />;

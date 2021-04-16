@@ -20,13 +20,13 @@ function EditProfileModal({ editModalOpen, modalVariants, setEditModalOpen }) {
 
   return (
     <motion.div
-      className={`h-screen w-screen z-50 bg-gray-900 bg-opacity-40 fixed top-0 flex justify-center py-4 px-2 ${
+      className={`w-screen h-screen z-50 bg-gray-900 bg-opacity-40 fixed top-0 flex justify-center py-4 px-2 ${
         editModalOpen ? '' : 'hidden'
       }`}
       variants={modalVariants}
       animate={editModalOpen ? 'open' : 'closed'}
     >
-      <div className='h-full w-full bg-gray-50 rounded-xl py-3 px-2 flex flex-col'>
+      <div className='h-full w-full overflow-scroll bg-gray-50 rounded-xl py-3 px-2 flex flex-col'>
         <div className='px-3'>
           <div className='text-xl pt-3'>Edit profile</div>
           <hr className='my-3 border border-roseMatcha w-20' />

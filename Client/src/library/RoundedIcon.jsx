@@ -1,10 +1,15 @@
 import React from 'react';
 
-function RoundedIcon({ Icon, iconClass, setNotificationModalOpen }) {
+function RoundedIcon({
+  Icon,
+  iconClass,
+  notificationModalOpen,
+  setNotificationModalOpen,
+}) {
   return (
     <div
       className='rounded-full mx-1'
-      onClick={() => setNotificationModalOpen(true)}
+      onClick={() => setNotificationModalOpen(!notificationModalOpen)}
     >
       <Icon className={iconClass} />
     </div>

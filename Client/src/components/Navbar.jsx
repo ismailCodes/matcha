@@ -13,6 +13,7 @@ const variants = {
 
 function Navbar({ setNotificationModalOpen }) {
   const [open, setOpen] = useState(false);
+
   return (
     <nav
       className={`w-full flex justify-between bg-transparent absolute top-0 h-16 items-center px-3 z-50`}

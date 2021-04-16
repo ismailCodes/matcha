@@ -33,10 +33,11 @@ const profile = {
 
 function Profile() {
   const [notificationModalOpen, setNotificationModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   return (
     <div
-      className='flex flex-col'
+      className={`flex flex-col ${editModalOpen ? 'overflow-hidden' : ''}`}
       style={{
         minHeight: '300px',
       }}
@@ -46,6 +47,8 @@ function Profile() {
         profile={profile}
         notificationModalOpen={notificationModalOpen}
         setNotificationModalOpen={setNotificationModalOpen}
+        editModalOpen={editModalOpen}
+        setEditModalOpen={setEditModalOpen}
       />
     </div>
   );

@@ -1,6 +1,4 @@
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
+import React from 'react';
 import { BiBell } from 'react-icons/bi';
 import RoundedIcon from '../library/RoundedIcon';
 
@@ -20,13 +18,14 @@ const editModalVariants = {
   },
 };
 
-function SmMenu({ setNotificationModalOpen }) {
+function SmMenu({ notificationModalOpen, setNotificationModalOpen }) {
   const iconsClass = 'h-10 w-10 px-1';
   return (
     <ul className='flex justify-end text-gray-50 font-thin w-1/3'>
       <RoundedIcon
         Icon={BiBell}
         iconClass={iconsClass}
+        notificationModalOpen={notificationModalOpen}
         setNotificationModalOpen={setNotificationModalOpen}
       />
     </ul>

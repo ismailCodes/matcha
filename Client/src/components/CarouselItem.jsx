@@ -1,6 +1,12 @@
 import React from 'react';
 
-function CarouselItem({ index, image, setCurrentPicture, setPictureModalOpen }) {
+function CarouselItem({
+  index,
+  image,
+  setCurrentPicture,
+  setPictureModalOpen,
+  isDragging,
+}) {
   return (
     <div
       className='rounded-xl mx-1 shadow-lg'
@@ -11,8 +17,11 @@ function CarouselItem({ index, image, setCurrentPicture, setPictureModalOpen }) 
         backgroundSize: 'cover',
       }}
       onClick={() => {
-        setCurrentPicture(index);
-        setPictureModalOpen(true);
+        console.log(isDragging.current);
+        if (!isDragging.current) {
+          setCurrentPicture(index);
+          setPictureModalOpen(true);
+        }
       }}
     />
   );
