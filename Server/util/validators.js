@@ -44,7 +44,12 @@ module.exports.validateRegisterInput = (
   //TODO:strengthen password.
   if (password === "" || password === null) {
     errors.password = "Password must not be empty";
-  } else if (password.length < 6 || password.length > 255) {
+  } else if (
+    //Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+      password
+    )
+  ) {
     errors.password = "Invalid password";
   }
   return {

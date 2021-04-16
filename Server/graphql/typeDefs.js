@@ -14,6 +14,7 @@ module.exports = gql`
     token: String
     distance: Int
     age: Int
+    interests: [String]
   }
 
   input RegisterInput {

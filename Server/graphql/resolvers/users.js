@@ -514,9 +514,8 @@ module.exports = {
           [user.id, userToLikeId]
         );
       }
-      //TODO:change return of like.. for notifications..
       context.pubsub.publish("NEW_LIKE", {
-        from: user.id,
+        newLike: { from: user.id },
       });
       return true;
     },
@@ -580,7 +579,9 @@ module.exports = {
       //TODO:Push relevant data to array like username distance photo of user...
       for (let user of sameSexualPreference.rows) {
         browseSuggestions.push({
-          id: user.user_id,
+          firstName: user.user_first_name,
+          lastName: user.user_last_name,
+          username: user.username,
           age: user.user_age,
           score: user.user_score,
           interests: user.user_interests,
