@@ -721,7 +721,6 @@ module.exports = {
           argsFormatted.orderBy.hasOwnProperty("score") &&
           argsFormatted.orderBy.score === "desc"
         ) {
-          console.log("sdfsdfsdF");
           browseSuggestions.sort(function (a, b) {
             return b.score - a.score;
           });
