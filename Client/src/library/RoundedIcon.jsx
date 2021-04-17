@@ -8,7 +8,9 @@ function RoundedIcon({
 }) {
   return (
     <div
-      className='rounded-full mx-1'
+      className={`rounded-full mx-1 ${
+        notificationModalOpen ? 'bg-gray-50 text-roseMatcha' : ''
+      }`}
       onClick={() => setNotificationModalOpen(!notificationModalOpen)}
     >
       <Icon className={iconClass} />

@@ -42,7 +42,10 @@ function Profile() {
         minHeight: '300px',
       }}
     >
-      <Navbar setNotificationModalOpen={setNotificationModalOpen} />
+      <Navbar
+        notificationModalOpen={notificationModalOpen}
+        setNotificationModalOpen={setNotificationModalOpen}
+      />
       <ProfileContainer
         profile={profile}
         notificationModalOpen={notificationModalOpen}

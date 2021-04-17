@@ -7,11 +7,27 @@ import { useState } from 'react';
 import SideBarContent from './SideBarContent';
 
 const variants = {
-  open: { x: 0 },
-  closed: { x: '-100vw' },
+  init: {
+    opacity: 0,
+    width: '94%',
+  },
+  closed: {
+    opacity: 0,
+    height: 0,
+    y: '-50vh',
+  },
+  open: {
+    opacity: 1,
+    width: '94%',
+    y: 55,
+    transition: {
+      type: 'tween',
+      // duration: 0.2,
+    },
+  },
 };
 
-function Navbar({ setNotificationModalOpen }) {
+function Navbar({ notificationModalOpen, setNotificationModalOpen }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -20,27 +36,31 @@ function Navbar({ setNotificationModalOpen }) {
     >
       <div className='flex justify-start relative text-gray-50 w-1/3'>
         <BiMenu
-          className={`h-10 w-10 ${open ? 'hidden' : ''}`}
-          onClick={() => setOpen(true)}
+          className={`h-10 w-10 p-1 ${
+            open ? 'bg-gray-50 rounded-full text-roseMatcha' : ''
+          }`}
+          onClick={() => setOpen(!open)}
         />
         <motion.div
-          initial='closed'
+          initial='init'
           animate={open ? 'open' : 'closed'}
           transition={{ duration: 0.8, type: 'spring', stiffness: 80 }}
           variants={variants}
-          className={`fixed h-screen w-72 bg-gray-50 bg-opacity-60 z-40 top-1`}
+          className={`fixed bg-gray-50 bg-opacity-60 top-1 ${open ? '' : 'hidden'}`}
           style={{
             backdropFilter: 'blur(20px)',
             borderRadius: '10px',
             border: '1px solid rgba( 255, 255, 255, 0.18 )',
           }}
         >
-          <SideBarContent open={open} setOpen={setOpen} />
+          <SideBarContent />
         </motion.div>
       </div>
       <Logo />
-      {/* <LgMenu /> */}
-      <SmMenu setNotificationModalOpen={setNotificationModalOpen} />
+      <SmMenu
+        notificationModalOpen={notificationModalOpen}
+        setNotificationModalOpen={setNotificationModalOpen}
+      />
     </nav>
   );
 }

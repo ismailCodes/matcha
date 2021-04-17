@@ -28,19 +28,18 @@ const modalVariants = {
 };
 
 const notificationModalVariants = {
+  init: {
+    opacity: 0,
+  },
   closed: {
     opacity: 0,
-    width: 0,
     height: 0,
-    right: 0,
+    top: 60,
   },
   open: {
     opacity: 1,
     width: '100%',
     height: '100vh',
-    transition: {
-      stiffness: 100,
-    },
   },
 };
 
@@ -139,8 +138,8 @@ function ProfileContainer({
       {/* notifications Modal */}
       <NotificationModal
         notificationModalOpen={notificationModalOpen}
-        notificationModalVariants={notificationModalVariants}
         setNotificationModalOpen={setNotificationModalOpen}
+        notificationModalVariants={notificationModalVariants}
       />
 
       {/* Personal Infos */}
@@ -197,11 +196,14 @@ function ProfileContainer({
           ))}
         </motion.div>
 
+        {/* tags */}
         <div className='w-11/12 mb-3 flex flex-wrap justify-center bg-transparent'>
           {tags.map((tag) => {
             return <Tag key={tag} text={tag} />;
           })}
         </div>
+
+        {/* report modal */}
         <div className='w-11/12 flex relative'>
           <motion.div
             className={`bg-gray-50 bg-opacity-60 absolute z-50 bottom-1 w-full h-40 pb-4 ${
