@@ -201,7 +201,7 @@ module.exports = {
     },
 
     async addGender(_, { gender }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       try {
         await pool.query(
           "UPDATE users SET user_gender = $1 WHERE user_id = $2",
@@ -215,7 +215,7 @@ module.exports = {
     },
 
     async addBiography(_, { biography }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       try {
         await pool.query(
           "UPDATE users SET user_biography = $1 WHERE user_id = $2",
@@ -229,7 +229,7 @@ module.exports = {
     },
 
     async addSexualPreference(_, { sexualPreference }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       try {
         await pool.query(
           "UPDATE users SET user_sexual_preference = $1 WHERE user_id = $2",
@@ -242,7 +242,7 @@ module.exports = {
       return true;
     },
     async modifyFirstName(_, { firstName }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       if (firstName === null || firstName.trim() === "") {
         throw new Error("Firstname must not be empty");
       } else if (
@@ -264,7 +264,7 @@ module.exports = {
       }
     },
     async modifyLastName(_, { lastName }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       if (lastName === null || lastName.trim() === "") {
         throw new Error("Lastname must not be empty");
       } else if (
@@ -286,7 +286,7 @@ module.exports = {
       }
     },
     async modifyEmail(_, { email }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       function validEmail(email) {
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
       }
@@ -308,7 +308,7 @@ module.exports = {
     },
 
     async modifyPosition(_, { lat, lon }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       if (!isLatitude(lat) || !isLongitude(lon)) {
         throw new UserInputError("Invalid lat/lon");
       }
@@ -324,7 +324,7 @@ module.exports = {
       }
     },
     /*async addBirthday(_, { birthday }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       var date = new Date();
       var currentYear = date.getFullYear();
       if (birthday === null || birthday === "") {
@@ -348,7 +348,7 @@ module.exports = {
       }
     },*/
     async addAge(_, { age }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       if (!lodash.isNumber(age)) {
         //graphql test this before by default ??
         throw new UserInputError("Invalid Age");
@@ -380,7 +380,7 @@ module.exports = {
     },
     //TODO:regex for interests : ^#[A-Za-z]+$ && lenght
     async addInterrests(_, { interests }, context, info) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       const obj = JSON.parse(JSON.stringify(interests));
       const interesTtab = [];
       //console.log(obj);
@@ -401,7 +401,7 @@ module.exports = {
     },
 
     async addInterrest(_, { interest }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       try {
         //TODO:valide interest input
         await pool.query(
@@ -416,7 +416,7 @@ module.exports = {
     },
 
     async removeInterrest(_, { interest }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       try {
         await pool.query(
           "UPDATE users SET user_interests = array_remove(user_interests , $1) WHERE user_id = $2",
@@ -430,7 +430,7 @@ module.exports = {
     },
     //https://ip-api.com/docs/api:json
     async forceGeolocation(_, {}, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       var endpoint =
         "http://ip-api.com/json/?fields=status,message,lat,lon,city";
       var xhr = new XMLHttpRequest();
@@ -461,7 +461,7 @@ module.exports = {
     },
 
     async blockUser(_, { userToBlockId }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
 
       const checkUserExists = await pool.query(
         "SELECT user_id from users WHERE user_id = $1",
@@ -487,7 +487,7 @@ module.exports = {
     },
 
     async likeUser(_, { userToLikeId }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       const checkUserExists = await pool.query(
         "SELECT user_id from users WHERE user_id = $1",
         [userToLikeId]
@@ -514,14 +514,11 @@ module.exports = {
           [user.id, userToLikeId]
         );
       }
-      context.pubsub.publish("NEW_LIKE", {
-        newLike: { from: user.id },
-      });
       return true;
     },
 
     async unLikeUser(_, { userToUnlikeId }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       const checkUserExists = await pool.query(
         "SELECT user_id from users WHERE user_id = $1",
         [userToUnlikeId]
@@ -550,10 +547,22 @@ module.exports = {
       }
       return true;
     },
+
+    async logOut(_, __, context) {
+      const user = await checkAuth(context);
+      const token = context.req.headers.authorization.split("Bearer ")[1];
+      try {
+        await pool.query("INSERT INTO black_list (token) VALUES ($1)", [token]);
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
   },
   Query: {
     async browseUsers(_, args, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       const userData = await pool.query(
         "SELECT * from users WHERE user_id = $1",
         [user.id]
@@ -755,7 +764,7 @@ module.exports = {
 
     //TODO: check complete profiles
     async checkProfile(_, { profileId }, context) {
-      const user = checkAuth(context);
+      const user = await checkAuth(context);
       const checkUser = await pool.query(
         "SELECT * from users WHERE user_id = $1",
         [profileId]

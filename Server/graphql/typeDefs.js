@@ -105,6 +105,7 @@ module.exports = gql`
     likeUser(userToLikeId: String!): Boolean!
     unLikeUser(userToUnlikeId: String!): Boolean!
     blockUser(userToBlockId: String!): Boolean!
+    logOut: Boolean!
   }
 
   type Subscription {

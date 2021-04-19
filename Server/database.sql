@@ -62,3 +62,19 @@ CREATE TABLE users
     to_user_id VARCHAR
     (255) NOT NULL
     );
+
+    CREATE TABLE NOTIFICATIONS (
+        notif_id INT GENERATED ALWAYS AS IDENTITY,
+        to_user_id VARCHAR
+    (255) NOT NULL,
+        from_user_id VARCHAR
+    (255) NOT NULL,
+        notif_message VARCHAR
+    (255) NOT NULL,
+        is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    );
+
+    CREATE TABLE black_list(
+        black_list INT GENERATED ALWAYS AS IDENTITY,
+        token VARCHAR NOT NULL
+    );
