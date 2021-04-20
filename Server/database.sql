@@ -76,5 +76,26 @@ CREATE TABLE users
 
     CREATE TABLE black_list(
         black_list INT GENERATED ALWAYS AS IDENTITY,
-        token VARCHAR NOT NULL
+        token VARCHAR NOT NULL,
+        timestamp timestamp NOT NULL DEFAULT NOW
+    ()
     );
+
+    -- https://www.the-art-of-web.com/sql/trigger-delete-old/
+    CREATE FUNCTION delete_old_rows() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        DELETE FROM black_list WHERE timestamp < NOW() - INTERVAL
+        '1 hour';
+    RETURN NULL;
+    END;
+$$;
+
+
+    CREATE TRIGGER trigger_delete_old_rows
+    AFTER
+    INSERT ON
+    black_list
+    EXECUTE PROCEDURE delete_old_rows
+    ();

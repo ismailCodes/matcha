@@ -402,6 +402,7 @@ module.exports = {
 
     async addInterrest(_, { interest }, context) {
       const user = await checkAuth(context);
+      //TODO:regex for interests : ^#[A-Za-z]+$ && lenght
       try {
         //TODO:valide interest input
         await pool.query(
@@ -570,13 +571,40 @@ module.exports = {
       let sameSexualPreference;
       if (userData.rows[0].user_sexual_preference === "Bisexual") {
         sameSexualPreference = await pool.query(
-          "SELECT * from users WHERE user_id != $1",
+          "SELECT * from users WHERE user_id != $1 AND user_sexual_preference = 'Bisexual'",
           [user.id]
         );
-      } else {
+      } else if (
+        userData.rows[0].user_sexual_preference === "Homosexual" &&
+        userData.rows[0].user_gender === "M"
+      ) {
         //TODO: MATCH gender && check for empty arrays
         sameSexualPreference = await pool.query(
-          "SELECT * from users WHERE user_sexual_preference = $1 AND user_id != $2",
+          "SELECT * from users WHERE user_sexual_preference = $1 AND user_gender = 'M' AND user_id != $2",
+          [userData.rows[0].user_sexual_preference, user.id]
+        );
+      } else if (
+        userData.rows[0].user_sexual_preference === "Homosexual" &&
+        userData.rows[0].user_gender === "F"
+      ) {
+        sameSexualPreference = await pool.query(
+          "SELECT * from users WHERE user_sexual_preference = $1 AND user_gender = 'F' AND user_id != $2",
+          [userData.rows[0].user_sexual_preference, user.id]
+        );
+      } else if (
+        userData.rows[0].user_sexual_preference === "Heterosexual" &&
+        userData.rows[0].user_gender === "M"
+      ) {
+        sameSexualPreference = await pool.query(
+          "SELECT * from users WHERE user_sexual_preference = $1 AND user_gender = 'F' AND user_id != $2",
+          [userData.rows[0].user_sexual_preference, user.id]
+        );
+      } else if (
+        userData.rows[0].user_sexual_preference === "Homosexual" &&
+        userData.rows[0].user_gender === "F"
+      ) {
+        sameSexualPreference = await pool.query(
+          "SELECT * from users WHERE user_sexual_preference = $1 AND user_gender = 'M' AND user_id != $2",
           [userData.rows[0].user_sexual_preference, user.id]
         );
       }
