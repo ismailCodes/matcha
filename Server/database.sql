@@ -99,3 +99,12 @@ $$;
     black_list
     EXECUTE PROCEDURE delete_old_rows
     ();
+
+    CREATE TABLE reported_users (
+        report_id INT GENERATED ALWAYS AS IDENTITY,
+        from_user_id VARCHAR
+    (255) NOT NULL,
+        to_user_id VARCHAR
+    (255) NOT NULL,
+    timestamp timestamp NOT NULL DEFAULT NOW
+    );

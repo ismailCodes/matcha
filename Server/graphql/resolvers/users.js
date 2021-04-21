@@ -402,6 +402,9 @@ module.exports = {
 
     async addInterrest(_, { interest }, context) {
       const user = await checkAuth(context);
+      if (!/^#[A-Za-z]+$/.test(interest) || interest.length > 50) {
+        throw new UserInputError("Invalid interest");
+      }
       //TODO:regex for interests : ^#[A-Za-z]+$ && lenght
       try {
         //TODO:valide interest input
@@ -553,7 +556,32 @@ module.exports = {
       const user = await checkAuth(context);
       const token = context.req.headers.authorization.split("Bearer ")[1];
       try {
+        await pool.query(
+          "UPDATE users SET user_last_connected = current_timestamp WHERE user_id = $1",
+          [user_id]
+        );
         await pool.query("INSERT INTO black_list (token) VALUES ($1)", [token]);
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    },
+
+    async reportUser(_, { userId }, context) {
+      const user = await checkAuth(context);
+      const checkReport = await pool.query(
+        "SELECT report_id FROM reported_users WHERE from_user_id = $1 AND to_user_id = $2",
+        [user.id, userId]
+      );
+      if (checkReport.rows.length !== 0) {
+        throw new UserInputError("User Already reported");
+      }
+      try {
+        await pool.query(
+          "INSERT INTO reported_users (from_user_id, to_user_id) VALUES ($1, $2)",
+          [user.id, userId]
+        );
         return true;
       } catch (error) {
         console.log(error);
@@ -817,11 +845,16 @@ module.exports = {
         console.log(error);
         return null; // TODO: check what to return
       }
+      const checkMatch = await pool.query(
+        "(SELECT like_id from likes WHERE from_user_id = $1 AND to_user_id = $2) UNION (SELECT like_id from likes WHERE from_user_id = $3 AND to_user_id = $4)",
+        [user.id, profileId, profileId, user.id]
+      );
       return {
         firstName: checkUser.rows[0].user_first_name,
         lastName: checkUser.rows[0].user_last_name,
         username: checkUser.rows[0].username,
         age: checkUser.rows[0].user_age,
+        connected: checkMatch.rowCount === 2 ? true : false,
         //TODO:RETURN other infos of user
       };
     },

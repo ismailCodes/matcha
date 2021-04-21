@@ -15,6 +15,7 @@ module.exports = gql`
     distance: Int
     age: Int
     interests: [String]
+    connected: Boolean
   }
 
   input RegisterInput {
@@ -106,6 +107,7 @@ module.exports = gql`
     unLikeUser(userToUnlikeId: String!): Boolean!
     blockUser(userToBlockId: String!): Boolean!
     logOut: Boolean!
+    reportUser(userId: String!): Boolean!
   }
 
   type Subscription {
