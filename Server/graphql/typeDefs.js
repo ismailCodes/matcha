@@ -74,8 +74,9 @@ module.exports = gql`
     desc
   }
 
-  type Like {
+  type notification {
     from: String
+    message: String
   }
 
   type Query {
@@ -111,6 +112,6 @@ module.exports = gql`
   }
 
   type Subscription {
-    newLike: Like
+    newNotification: notification
   }
 `;

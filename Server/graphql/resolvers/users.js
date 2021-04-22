@@ -513,10 +513,28 @@ module.exports = {
       if (checkBlock.rows.length !== 0) {
         throw new UserInputError("Can't like this user");
       } else {
-        await pool.query(
-          "INSERT into likes (from_user_id, to_user_id) VALUES ($1, $2)",
-          [user.id, userToLikeId]
-        );
+        try {
+          await pool.query(
+            "INSERT into likes (from_user_id, to_user_id) VALUES ($1, $2)",
+            [user.id, userToLikeId]
+          );
+          await pool.query(
+            "INSERT INTO notifications (from_user_id, to_user_id, notif_message) VALUES($1, $2, $3)",
+            [user.id, userToLikeId, "like"]
+          );
+          const checkMatch = await pool.query(
+            "SELECT like_id from likes WHERE from_user_id = $1 AND to_user_id = $2",
+            [userToLikeId, user.id]
+          );
+          if (checkMatch.rowCount === 1) {
+            await pool.query(
+              "INSERT INTO notifications (from_user_id, to_user_id, notif_message) VALUES ($1, $2, $3)",
+              [user.id, userToLikeId, "match"]
+            );
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
       return true;
     },
@@ -544,10 +562,25 @@ module.exports = {
       if (checkBlock.rows.length !== 0) {
         throw new UserInputError("Can't unlike this user");
       } else {
-        await pool.query(
-          "DELETE FROM likes WHERE from_user_id = $1 AND to_user_id = $2",
-          [user.id, userToUnlikeId]
-        );
+        try {
+          const checkMatch = await pool.query(
+            "(SELECT like_id from likes WHERE from_user_id = $1 AND to_user_id = $2) UNION (SELECT like_id from likes WHERE from_user_id = $3 AND to_user_id = $4)",
+            [user.id, userToUnlikeId, userToUnlikeId, user.id]
+          );
+          await pool.query(
+            "DELETE FROM likes WHERE from_user_id = $1 AND to_user_id = $2",
+            [user.id, userToUnlikeId]
+          );
+          if (checkMatch.rowCount === 2) {
+            await pool.query(
+              "INSERT INTO notifications (from_user_id, to_user_id, notif_message) VALUES ($1, $2, $3)",
+              [user.id, userToUnlikeId, "connected unlike"]
+            );
+          }
+        } catch (err) {
+          console.error(err);
+          return false;
+        }
       }
       return true;
     },
@@ -841,6 +874,10 @@ module.exports = {
           "INSERT into profile_look (from_user_id, to_user_id) VALUES ($1, $2)",
           [user.id, profileId]
         );
+        await pool.query(
+          "INSERT INTO notifications (from_user_id, to_user_id, notif_message) VALUES($1, $2, $3)",
+          [user.id, profileId, "profile check"]
+        );
       } catch (error) {
         console.log(error);
         return null; // TODO: check what to return
@@ -861,8 +898,21 @@ module.exports = {
   },
   //},
   Subscription: {
-    newLike: {
-      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("NEW_LIKE"),
+    newNotification: {
+      subscribe: async (_, __, context) => {
+        // console.log(context);
+        // const user = await checkAuth(context);
+
+        const notif = await pool.query(
+          "SELECT * from notifications WHERE to_user_id = $1",
+          ["4aec7470-8cbd-41a4-9c17-7e7f31e12d62"]
+        );
+
+        return {
+          from: notif.rows[0].from_user_id,
+          message: notif.rows[0].notif_message,
+        };
+      },
     },
   },
 };

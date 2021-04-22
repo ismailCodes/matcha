@@ -63,13 +63,13 @@ CREATE TABLE users
     (255) NOT NULL
     );
 
-    CREATE TABLE NOTIFICATIONS (
+    CREATE TABLE notifications (
         notif_id INT GENERATED ALWAYS AS IDENTITY,
         to_user_id VARCHAR
     (255) NOT NULL,
         from_user_id VARCHAR
     (255) NOT NULL,
-        notif_message VARCHAR
+        notif_type VARCHAR
     (255) NOT NULL,
         is_read BOOLEAN NOT NULL DEFAULT FALSE,
     );
